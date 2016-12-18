@@ -1,7 +1,7 @@
 import unittest
 import unittest.mock
 import shutil
-from requirements.NpmRequirement import NpmRequirement
+from dependency_management.requirements.NpmRequirement import NpmRequirement
 
 
 @unittest.skipIf(shutil.which('npm') is None, "Npm is not installed.")

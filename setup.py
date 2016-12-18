@@ -8,7 +8,7 @@ with open("README.md") as readme:
     long_description = readme.read()
 if __name__ == "__main__":
     setup(name='dependency_management',
-          version='0.1',
+          version='0.1.5',
           description='coala Dependency Management',
           author="Adrian Zatreanu",
           maintainer="Adrian Zatreanu",

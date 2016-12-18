@@ -1,6 +1,6 @@
 import unittest
 import shutil
-from requirements.PipRequirement import PipRequirement
+from dependency_management.requirements.PipRequirement import PipRequirement
 
 
 @unittest.skipIf(shutil.which('pip') is None, "Pip is not installed.")

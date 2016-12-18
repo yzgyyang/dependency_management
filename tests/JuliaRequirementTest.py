@@ -1,7 +1,8 @@
 import shutil
 import unittest
 
-from requirements.JuliaRequirement import JuliaRequirement
+from dependency_management.requirements.JuliaRequirement import (
+    JuliaRequirement)
 
 
 @unittest.skipIf(shutil.which('julia') is None, 'Julia is not installed.')
