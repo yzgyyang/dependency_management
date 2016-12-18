@@ -1,3 +1,4 @@
 *.py.orig
 __pycache__/
 .DS_STORE
+.cache
