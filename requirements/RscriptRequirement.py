@@ -1,4 +1,4 @@
-from coalib.bears.requirements.PackageRequirement import PackageRequirement
+from requirements.PackageRequirement import PackageRequirement
 from coalib.misc.Shell import run_shell_command
 
 

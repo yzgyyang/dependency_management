@@ -1,4 +1,4 @@
-from coalib.bears.requirements.PackageRequirement import PackageRequirement
+from requirements.PackageRequirement import PackageRequirement
 
 
 class DistributionRequirement(PackageRequirement):
