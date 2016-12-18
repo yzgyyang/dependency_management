@@ -1,7 +1,7 @@
 import platform
 import shutil
 import unittest
-from requirements.GemRequirement import GemRequirement
+from dependency_management.requirements.GemRequirement import GemRequirement
 from coalib.misc.Shell import call_without_output
 
 cmd = ['gem', 'list', '-i', 'ruby']

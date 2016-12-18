@@ -1,6 +1,7 @@
 import shutil
 import unittest
-from requirements.RscriptRequirement import RscriptRequirement
+from dependency_management.requirements.RscriptRequirement import (
+    RscriptRequirement)
 from coalib.misc.Shell import call_without_output
 
 

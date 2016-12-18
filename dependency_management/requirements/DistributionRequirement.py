@@ -1,4 +1,5 @@
-from requirements.PackageRequirement import PackageRequirement
+from dependency_management.requirements.PackageRequirement import (
+    PackageRequirement)
 
 
 class DistributionRequirement(PackageRequirement):
