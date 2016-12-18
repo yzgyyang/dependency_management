@@ -29,6 +29,22 @@ class NpmRequirement(PackageRequirement):
         """
         PackageRequirement.__init__(self, 'npm', package, version)
 
+    def install_command(self):
+        """
+        Creates the installation command for the instance of the class.
+
+        >>> NpmRequirement('alex', '2').install_command()
+        ['npm', 'install', 'alex@2']
+
+        >>> NpmRequirement('alex').install_command()
+        ['npm', 'install', 'alex']
+
+        :param return: A string with the installation command.
+        """
+        result = ['npm', 'install', self.package + "@" + self.version
+                  if self.version else self.package]
+        return result
+
     def is_installed(self):
         """
         Checks if the dependency is installed.

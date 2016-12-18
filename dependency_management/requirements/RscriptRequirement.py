@@ -40,6 +40,21 @@ class RscriptRequirement(PackageRequirement):
         self.flag = flag
         self.repo = repo
 
+    def install_command(self):
+        """
+        Creates the installation command for the instance of the class.
+
+        >>> RscriptRequirement(
+        ...     'formatR', '' , '-e',
+        ...     'http://cran.rstudio.com').install_command()
+        'R -e "install.packages(\"formatR\", repo=\"http://cran.rstudio.com\", dependencies=TRUE)"'
+
+        :param return: A string with the installation command.
+        """
+        return ('R {} "install.packages(\"{}\", repo=\"{}\", '
+                'dependencies=TRUE)"'.format(self.flag,
+                                             self.package, self.repo))
+
     def is_installed(self):
         """
         Checks if the dependency is installed.

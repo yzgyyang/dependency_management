@@ -33,6 +33,18 @@ class GoRequirement(PackageRequirement):
         PackageRequirement.__init__(self, 'go', package, version)
         self.flag = flag
 
+    def install_command(self):
+        """
+        Creates the installation command for the instance of the class.
+
+        >>> GoRequirement(
+        ...     'github.com/golang/lint/golint', '' , '-u' ).install_command()
+        ['go', 'get', '-u', 'github.com/golang/lint/golint']
+
+        :param return: A string with the installation command.
+        """
+        return ['go', 'get', self.flag, self.package]
+
     def is_installed(self):
         """
         Checks if the dependency is installed.
