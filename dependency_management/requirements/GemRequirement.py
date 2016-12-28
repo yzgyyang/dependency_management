@@ -1,6 +1,6 @@
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-from coalib.misc.Shell import call_without_output
+from sarge import run, Capture
 import platform
 
 
@@ -55,7 +55,7 @@ class GemRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        cmd = ['gem', 'list', '-i', self.package]
+        cmd = 'gem list -i' + self.package
         if platform.system() == 'Windows':  # pragma: no cover
-            cmd = ['cmd', '/c'] + cmd
-        return not call_without_output(cmd)
+            cmd = 'cmd /c' + cmd
+        return not run(cmd, stdout=Capture(), stderr=Capture()).returncode

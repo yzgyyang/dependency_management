@@ -2,14 +2,17 @@ import platform
 import shutil
 import unittest
 from dependency_management.requirements.GemRequirement import GemRequirement
-from coalib.misc.Shell import call_without_output
+from sarge import run, Capture
 
-cmd = ['gem', 'list', '-i', 'ruby']
+cmd = 'gem list -i ruby'
 if platform.system() == 'Windows':  # pragma: no cover
-    cmd = ['cmd', '/c'] + cmd
+    cmd = 'cmd /c ' + cmd
 
 
-@unittest.skipIf(shutil.which('gem') is None or bool(call_without_output(cmd)),
+@unittest.skipIf(shutil.which('gem') is None or bool(run(cmd,
+                                                         stdout=Capture(),
+                                                         stderr=Capture())
+                                                     .returncode),
                  "Gem is not installed.")
 class GemRequirementTestCase(unittest.TestCase):
 

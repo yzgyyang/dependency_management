@@ -1,6 +1,6 @@
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-from coalib.misc.Shell import call_without_output
+from sarge import run, Capture
 import platform
 
 
@@ -51,13 +51,13 @@ class NpmRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        for cmd in (['npm', 'list', self.package],
-                    ['npm', 'list', '-g', self.package]):
+        for cmd in ('npm list ' + self.package,
+                    'npm list -g ' + self.package):
 
             if platform.system() == 'Windows':  # pragma: no cover
-                cmd = ['cmd', '/c'] + cmd
+                cmd = 'cmd + /c ' + cmd
 
-            if not call_without_output(cmd):
+            if not run(cmd, stdout=Capture(), stderr=Capture()).returncode:
                 return True
 
         return False

@@ -1,6 +1,6 @@
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-from coalib.misc.Shell import run_shell_command
+from sarge import run, Capture
 
 
 class RscriptRequirement(PackageRequirement):
@@ -61,6 +61,7 @@ class RscriptRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        return True if run_shell_command(
-                ('R -e \'library(\"{}\", quietly=TRUE)\''
-                 .format(self.package)))[1] is '' else False
+        return not run(
+                ('R -e \'library(\"{}\", quietly=TRUE)\''.format(self.package)),
+                stdout=Capture(),
+                stderr=Capture()).returncode

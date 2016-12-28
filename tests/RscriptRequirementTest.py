@@ -2,7 +2,6 @@ import shutil
 import unittest
 from dependency_management.requirements.RscriptRequirement import (
     RscriptRequirement)
-from coalib.misc.Shell import call_without_output
 
 
 @unittest.skipIf(shutil.which('R') is None, "R is not installed.")

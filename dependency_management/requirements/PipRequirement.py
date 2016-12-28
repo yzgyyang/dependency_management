@@ -1,6 +1,6 @@
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-from coalib.misc.Shell import call_without_output
+from sarge import run, Capture
 import sys
 
 
@@ -46,5 +46,6 @@ class PipRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        return not call_without_output((sys.executable, '-m', 'pip',
-                                        'show', self.package))
+        return not run(sys.executable + ' -m pip show ' + self.package,
+                       stdout=Capture(),
+                       stderr=Capture()).returncode

@@ -1,6 +1,6 @@
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-from coalib.misc.Shell import call_without_output
+from sarge import run, Capture
 
 
 class GoRequirement(PackageRequirement):
@@ -51,4 +51,6 @@ class GoRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        return not call_without_output(('go', 'list', self.package))
+        return not run('go list' + self.package,
+                       stdout=Capture(),
+                       stderr=Capture()).returncode

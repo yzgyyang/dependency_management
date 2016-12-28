@@ -2,7 +2,8 @@ import shlex
 
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-from coalib.misc.Shell import call_without_output
+from sarge import Capture
+from sarge import run
 
 from coala_utils.string_processing import escape
 
@@ -57,5 +58,5 @@ class JuliaRequirement(PackageRequirement):
         # with an error code different from 0.
         code = 'Pkg.installed("{}")==nothing?exit(1):exit(0)'.format(
             escape(self.package, '\\"'))
-        args = ('julia', '-e', code)
-        return not call_without_output(args)
+        args = 'julia -e ' + code
+        return not run(args, stdout=Capture(), stderr=Capture()).returncode

@@ -1,2 +1,2 @@
-coala>=0.10.0.dev20161217232433
+sarge~=0.1.4
 coala_utils~=0.5.1
