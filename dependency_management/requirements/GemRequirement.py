@@ -55,7 +55,7 @@ class GemRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        cmd = 'gem list -i' + self.package
+        cmd = 'gem list -i ' + self.package
         if platform.system() == 'Windows':  # pragma: no cover
-            cmd = 'cmd /c' + cmd
+            cmd = 'cmd /c ' + cmd
         return not run(cmd, stdout=Capture(), stderr=Capture()).returncode
