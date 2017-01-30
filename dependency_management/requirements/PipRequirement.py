@@ -49,3 +49,25 @@ class PipRequirement(PackageRequirement):
         return not run(sys.executable + ' -m pip show ' + self.package,
                        stdout=Capture(),
                        stderr=Capture()).returncode
+
+    def install_package(self):
+        """
+        Runs the install command for the package given in a sub-process.
+        """
+        run(" ".join(self.install_command), stdout=Capture(), stderr=Capture())
+
+    def upgrade_package(self):
+        """
+        Runs the upgrade command for the package given in a sub-process.
+        """
+        run(sys.executable + ' -m pip install ' + self.package + ' --upgrade',
+            stdout=Capture(),
+            stderr=Capture())
+
+    def uninstall_package(self):
+        """
+        Runs the uninstall command for the package given in a sub-process.
+        """
+        run(sys.executable + ' -m pip uninstall -y ' + self.package,
+            stdout=Capture(),
+            stderr=Capture())
