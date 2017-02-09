@@ -1,4 +1,5 @@
 from coala_utils.decorators import generate_eq, generate_repr
+from sarge import run, Capture
 
 
 @generate_eq("type", "package", "version")
@@ -36,6 +37,20 @@ class PackageRequirement:
         self.type = type
         self.package = package
         self.version = version
+
+    def install_package(self):
+        """
+        Runs the install command for the package given in a sub-process.
+        """
+        run(" ".join(self.install_command()), stdout=Capture(),
+            stderr=Capture())
+
+    def install_command(self):
+        """
+        Returns a string with the installation command, to be used by
+        "install_package()".
+        """
+        raise NotImplementedError
 
     def is_installed(self):
         """
