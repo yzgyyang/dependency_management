@@ -1,9 +1,22 @@
+variables:
+  DEBIAN_PACKAGE_MANAGERS: >
+    cabal-install ghc haskell-platform
+    golang
+    npm
+    r-base
+    ruby
+
 run_tests:
   image: python:3.5
   script:
+  - apt-get update -qq
+  - apt-get install -y -qq $DEBIAN_PACKAGE_MANAGERS
+  # GemRequirementTest requires dummy gem 'ruby' which is not installed
+  - gem install ruby
   - pip3 install -r requirements.txt
   - pip3 install -r test-requirements.txt
-  - py.test --cov
+  - py.test
+
 check_code:
   image: coala/base
   script:
