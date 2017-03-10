@@ -28,6 +28,7 @@ run_tests:
   - php -r "unlink('composer-setup.php'); unlink('installer.sig');"
   - mv composer.phar /usr/local/bin/composer
   - py.test
+  - codecov
 
 check_code:
   image: coala/base
