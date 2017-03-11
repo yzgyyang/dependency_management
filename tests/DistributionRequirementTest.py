@@ -100,24 +100,20 @@ class ExpectedErrorsDistributionRequirementTestCase(unittest.TestCase):
                                        'supported package manager')
 
     def test_no_supported_package_manager(self):
-        self.assertRaisesRegex(NotImplementedError,
-                               self.NO_SUPPORTED_PACKAGE_MANAGER_RE,
-                               DistributionRequirement()
-                               .get_available_package_manager())
+        with self.assertRaisesRegex(
+                NotImplementedError,
+                self.NO_SUPPORTED_PACKAGE_MANAGER_RE):
+            DistributionRequirement().get_available_package_manager()
 
     def test_platform_without_supported_package_manager(self):
+        pm_packages = DistributionRequirement.SUPPORTED_PACKAGE_MANAGERS
         _shutil_which = shutil.which
         try:
             shutil.which = lambda *args, **kwargs: None
-            self.assertRaisesRegex(NotImplementedError,
-                                   self.NO_SUPPORTED_PACKAGE_MANAGER_RE,
-                                   DistributionRequirement(apt_get='apt',
-                                                           dnf='dnf',
-                                                           pacman='pacman',
-                                                           portage='portage',
-                                                           xbps='xbps',
-                                                           yum='yum',
-                                                           zypper='zypper')
-                                   .get_available_package_manager())
+            with self.assertRaisesRegex(
+                    NotImplementedError,
+                    self.NO_SUPPORTED_PACKAGE_MANAGER_RE):
+                dr = DistributionRequirement(**pm_packages)
+                dr.get_available_package_manager()
         finally:
             shutil.which = _shutil_which
