@@ -12,7 +12,7 @@ class NpmRequirementTestCase(unittest.TestCase):
         with unittest.mock.patch('dependency_management.requirements.' +
                                  'NpmRequirement.run') as mock:
             patched = unittest.mock.Mock(spec=sarge.Pipeline)
-            patched.returncode.return_value = 0
+            patched.returncode = 0
             mock.return_value = patched
             self.assertTrue(NpmRequirement('some_good_package').is_installed())
 
