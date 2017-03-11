@@ -51,6 +51,6 @@ class GoRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        return not run('go list' + self.package,
+        return not run('go list ' + self.package,
                        stdout=Capture(),
                        stderr=Capture()).returncode
