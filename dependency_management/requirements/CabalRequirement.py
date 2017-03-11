@@ -50,6 +50,6 @@ class CabalRequirement(PackageRequirement):
 
         :param return: True if dependency is installed, false otherwise.
         """
-        return not run('cabal info' + self.package,
+        return not run('cabal info ' + self.package,
                        stdout=Capture(),
                        stderr=Capture()).returncode
