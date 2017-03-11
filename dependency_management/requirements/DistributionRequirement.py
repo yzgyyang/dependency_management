@@ -68,7 +68,7 @@ class DistributionRequirement(PackageRequirement):
                     return manager
             except KeyError:
                 raise NotImplementedError("{} is not supported".format(manager))
-        raise NotImplementedError("This system doesn't have any of the "
+        raise NotImplementedError("This platform doesn't have any of the "
                                   'supported package manager(s): '
                                   '{}'.format(','.join(self.package.keys())))
 
