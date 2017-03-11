@@ -29,12 +29,12 @@ class DistributionRequirement(PackageRequirement):
     """
     CHECKER_COMMANDS = {
         'apt_get': 'dpkg-query -l {}',
-        'dnf': 'rpm -qa | grep ^{}',
+        'dnf': 'rpm -qa | grep "^{}"',
         'pacman': 'pacman -Qs {}',
         'portage': 'equery list {}',
         'xbps': 'xbps-query {}',
-        'yum': 'rpm -qa | grep ^{}',
-        'zypper': 'rpm -qa | grep ^{}',
+        'yum': 'rpm -qa | grep "^{}"',
+        'zypper': 'rpm -qa | grep "^{}"',
     }
 
     def __init__(self, **manager_commands):
