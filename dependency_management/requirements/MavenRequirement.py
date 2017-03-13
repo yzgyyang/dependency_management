@@ -1,5 +1,6 @@
 import re
-import logging
+
+from sarge import run, Capture
 
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
@@ -40,13 +41,8 @@ class MavenRequirement(PackageRequirement):
         package_match = (re.compile(package_regex)).match(package)
 
         if not package_match:
-            logging.error(
+            raise ValueError(
                 'The package must be of the form [groupId:artifactId]')
-            return
-
-        if version is None:
-            logging.error('Please specify the version of the package')
-            return
 
         PackageRequirement.__init__(self, 'mvn', package, version)
         self.repo = repo

@@ -1,6 +1,8 @@
 import unittest
 import shutil
-import logging
+
+import sarge
+
 from dependency_management.requirements.MavenRequirement import MavenRequirement
 
 
@@ -9,46 +11,38 @@ class MavenRequirementTestCase(unittest.TestCase):
 
     def test__str__(self):
         self.assertEqual(
-            str(MavenRequirement('com.puppycrawl.tools:checkstyle')),
-            'com.puppycrawl.tools:checkstyle')
-        self.assertEqual(
             str(MavenRequirement('com.puppycrawl.tools:checkstyle', '6.15')),
             'com.puppycrawl.tools:checkstyle 6.15')
+        self.assertEqual(
+            str(MavenRequirement('net.sourceforge.pmd:pmd', '5.0.1')),
+            'net.sourceforge.pmd:pmd 5.0.1')
+        self.assertEqual(
+            str(MavenRequirement('org.languagetool:languagetool-core', '3.6')),
+            'org.languagetool:languagetool-core 3.6')
 
     def test_installed_requirement(self):
-        with MavenRequirement('com.puppycrawl.tools:checkstyle', '6.15'):
-            self.assertTrue(MavenRequirement('com.puppycrawl.tools:checkstyle',
-                                             '6.15').is_installed())
-
-        with MavenRequirement('net.sourceforge.pmd:pmd', '5.0.1'):
-            self.assertTrue(MavenRequirement('net.sourceforge.pmd:pmd',
-                                             '5.0.1').is_installed())
-
-        with MavenRequirement('org.languagetool:languagetool-core', '3.6'):
-            self.assertTrue(MavenRequirement('org.languagetool:languagetool'
-                                             '-core', '3.6').is_installed())
+        with unittest.mock.patch('dependency_management.requirements.' +
+                                 'MavenRequirement.run') as mock:
+            patched = unittest.mock.Mock(spec=sarge.Pipeline)
+            patched.returncode = 0
+            mock.return_value = patched
+            self.assertTrue(MavenRequirement(
+                'some_good_package:package', '1.0').is_installed())
 
     def test_not_installed_requirement(self):
-        with MavenRequirement('com.puppycrawl.tools:checkstyle', '6.15'):
-            self.assertTrue(MavenRequirement('bad_groupId:bad_artifactId',
-                                             '0.0').is_installed())
+        self.assertFalse(MavenRequirement(
+            'some_bad_package:package', '1.0').is_installed())
 
     def test_wrong_package_format(self):
-        logger = logging.getLogger()
-
-        with self.assertLogs(logger, 'ERROR') as log:
-            with MavenRequirement('com.puppycrawl.tools.checkstyle', '6.15'):
-                self.assertEqual(len(log.output), 1)
-                self.assertIn(log.output[0],
-                              'ERROR:root:The package must be of the form'
-                              ' [groupId:artifactId]')
+        with self.assertRaises(ValueError) as log:
+            MavenRequirement('some_good_package', '1.0')
+            self.assertEqual(str(log.exception),
+                             'The package must be of the form '
+                             '[groupId:artifactId]')
 
     def test_no_version(self):
-        logger = logging.getLogger()
-
-        with self.assertLogs(logger, 'ERROR') as log:
-            with MavenRequirement('com.puppycrawl.tools:checkstyle'):
-                self.assertEqual(len(log.output), 1)
-                self.assertIn(log.output[0],
-                              'ERROR:root:Please specify the version'
-                              ' of the package')
+        with self.assertRaises(TypeError) as log:
+            MavenRequirement('some_good_package:package')
+            self.assertEqual(str(log.exception),
+                             '__init__() missing 1 required positional '
+                             "argument: 'version'")
