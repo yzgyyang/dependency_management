@@ -8,6 +8,10 @@ from dependency_management.requirements.JuliaRequirement import (
 @unittest.skipIf(shutil.which('julia') is None, 'Julia is not installed.')
 class JuliaRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(JuliaRequirement('Lint')), 'Lint')
+        self.assertEqual(str(JuliaRequirement('Lint', '0.5')), 'Lint 0.5')
+
     def test_installed_requirement(self):
         self.assertTrue(JuliaRequirement("Lint").is_installed())
 

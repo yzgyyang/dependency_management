@@ -23,6 +23,8 @@ class ComposerRequirement(PackageRequirement):
         'phpstan/phpstan'
         >>> pr.version
         '0.6.4'
+        >>> str(pr)
+        'phpstan/phpstan 0.6.4'
 
         :param package:
             A string with the name of the package to be installed.

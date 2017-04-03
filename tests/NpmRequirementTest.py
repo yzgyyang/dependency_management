@@ -8,6 +8,10 @@ from dependency_management.requirements.NpmRequirement import NpmRequirement
 @unittest.skipIf(shutil.which('npm') is None, "Npm is not installed.")
 class NpmRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(NpmRequirement('npm')), 'npm')
+        self.assertEqual(str(NpmRequirement('npm', '4.5')), 'npm 4.5')
+
     def test_installed_requirement(self):
         with unittest.mock.patch('dependency_management.requirements.' +
                                  'NpmRequirement.run') as mock:

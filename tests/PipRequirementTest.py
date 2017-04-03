@@ -7,6 +7,11 @@ from dependency_management.requirements.PipRequirement import PipRequirement
 @unittest.skipIf(shutil.which('pip') is None, "Pip is not installed.")
 class PipRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(PipRequirement('setuptools')), 'setuptools')
+        self.assertEqual(str(PipRequirement('setuptools', '19.2')),
+                         'setuptools 19.2')
+
     def test_install_command_with_version(self):
         self.assertEqual(
             [sys.executable, '-m', 'pip', 'install', 'setuptools==19.2'],

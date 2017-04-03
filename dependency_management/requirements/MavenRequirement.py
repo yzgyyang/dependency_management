@@ -25,6 +25,8 @@ class MavenRequirement(PackageRequirement):
         'com.puppycrawl.tools:checkstyle'
         >>> mr.version
         '6.15'
+        >>> str(mr)
+        'com.puppycrawl.tools:checkstyle 6.15'
         >>> mr.repo
         'https://repo.maven.apache.org/maven2'
 

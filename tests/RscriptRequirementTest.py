@@ -7,6 +7,10 @@ from dependency_management.requirements.RscriptRequirement import (
 @unittest.skipIf(shutil.which('R') is None, "R is not installed.")
 class RscriptRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(RscriptRequirement('base')), 'base')
+        self.assertEqual(str(RscriptRequirement('base', '3.5')), 'base 3.5')
+
     def test_installed_requirement(self):
         self.assertTrue(RscriptRequirement('base').is_installed())
 

@@ -16,6 +16,10 @@ if platform.system() == 'Windows':  # pragma: no cover
                  "Gem is not installed.")
 class GemRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(GemRequirement('ruby')), 'ruby')
+        self.assertEqual(str(GemRequirement('ruby', '2.4.1')), 'ruby 2.4.1')
+
     def test_installed_requirement(self):
         self.assertTrue(GemRequirement('ruby').is_installed())
 

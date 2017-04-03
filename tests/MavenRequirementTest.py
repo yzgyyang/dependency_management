@@ -7,6 +7,14 @@ from dependency_management.requirements.MavenRequirement import MavenRequirement
 @unittest.skipIf(shutil.which('mvn') is None, "Maven is not installed.")
 class MavenRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(
+            str(MavenRequirement('com.puppycrawl.tools:checkstyle')),
+            'com.puppycrawl.tools:checkstyle')
+        self.assertEqual(
+            str(MavenRequirement('com.puppycrawl.tools:checkstyle', '6.15')),
+            'com.puppycrawl.tools:checkstyle 6.15')
+
     def test_installed_requirement(self):
         with MavenRequirement('com.puppycrawl.tools:checkstyle', '6.15'):
             self.assertTrue(MavenRequirement('com.puppycrawl.tools:checkstyle',

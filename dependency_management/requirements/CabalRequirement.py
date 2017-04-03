@@ -22,6 +22,8 @@ class CabalRequirement(PackageRequirement):
         'zoom'
         >>> cr.version
         '0.1'
+        >>> str(cr)
+        'zoom 0.1'
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string. Leave empty to specify latest version.

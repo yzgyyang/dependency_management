@@ -23,6 +23,8 @@ class NpmRequirement(PackageRequirement):
         'ramllint'
         >>> pr.version
         '6.2'
+        >>> str(pr)
+        'ramllint 6.2'
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string. Leave empty to specify latest version.

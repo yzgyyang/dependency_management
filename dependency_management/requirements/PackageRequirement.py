@@ -29,6 +29,8 @@ class PackageRequirement:
         'colorama'
         >>> pr.version
         '0.1.0'
+        >>> str(pr)
+        'colorama 0.1.0'
 
         :param type:    A string with the name of the manager (pip, npm, etc).
         :param package: A string with the name of the package to be installed.
@@ -37,6 +39,15 @@ class PackageRequirement:
         self.type = type
         self.package = package
         self.version = version
+
+    def __str__(self):
+        """
+        Just return package name, followed by version if given.
+        """
+        if self.version:
+            return " ".join((self.package, self.version))
+
+        return self.package
 
     def install_package(self):
         """

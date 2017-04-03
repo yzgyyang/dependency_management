@@ -52,6 +52,12 @@ class DistributionRequirement(PackageRequirement):
         """
         self.package = manager_commands
 
+    def __str__(self):
+        """
+        Just return package name based on available package manager.
+        """
+        return self.package[self.get_available_package_manager()]
+
     def get_available_package_manager(self):
         """
         Returns the available package manager that can be used to satisfy

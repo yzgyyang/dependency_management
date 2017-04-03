@@ -10,6 +10,13 @@ from dependency_management.requirements.ComposerRequirement import (
                  "Composer is not installed.")
 class ComposerRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(ComposerRequirement('composer/composer')),
+                         'composer/composer')
+        self.assertEqual(
+            str(ComposerRequirement('composer/composer', '1.4.1')),
+            'composer/composer 1.4.1')
+
     def test_installed_requirement(self):
         with unittest.mock.patch('dependency_management.requirements.' +
                                  'ComposerRequirement.run') as mock:

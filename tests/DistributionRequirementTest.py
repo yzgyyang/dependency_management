@@ -10,6 +10,9 @@ from dependency_management.requirements.DistributionRequirement import (
                  'APT is not available on this platform')
 class APTDistributionRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(apt_get='apt')), 'apt')
+
     def test_installed_requirement(self):
         self.assertTrue(DistributionRequirement(apt_get='apt').is_installed())
 
@@ -22,6 +25,9 @@ class APTDistributionRequirementTestCase(unittest.TestCase):
                  'DNF is not available on this platform')
 class DNFDistributionRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(dnf='dnf')), 'dnf')
+
     def test_installed_requirement(self):
         self.assertTrue(DistributionRequirement(dnf='dnf').is_installed())
 
@@ -33,6 +39,10 @@ class DNFDistributionRequirementTestCase(unittest.TestCase):
 @unittest.skipIf(not is_executable_exists('pacman'),
                  'Pacman is not available on this platform')
 class PacmanDistributionRequirementTestCase(unittest.TestCase):
+
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(pacman='pacman')),
+                         'pacman')
 
     def test_installed_requirement(self):
         self.assertTrue(
@@ -47,6 +57,10 @@ class PacmanDistributionRequirementTestCase(unittest.TestCase):
                  'Portage is not available on this platform')
 class PortageDistributionRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(portage='portage')),
+                         'portage')
+
     def test_installed_requirement(self):
         self.assertTrue(
             DistributionRequirement(portage='portage').is_installed())
@@ -60,6 +74,9 @@ class PortageDistributionRequirementTestCase(unittest.TestCase):
                  'XBPS is not available on this platform')
 class XBPSDistributionRequirementTestCase(unittest.TestCase):
 
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(xbps='xbps')), 'xbps')
+
     def test_installed_requirement(self):
         self.assertTrue(DistributionRequirement(xbps='xbps').is_installed())
 
@@ -71,6 +88,9 @@ class XBPSDistributionRequirementTestCase(unittest.TestCase):
 @unittest.skipIf(not is_executable_exists('yum'),
                  'YUM is not available on this platform')
 class YUMDistributionRequirementTestCase(unittest.TestCase):
+
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(yum='yum')), 'yum')
 
     def test_installed_requirement(self):
         self.assertTrue(DistributionRequirement(yum='yum').is_installed() or
@@ -84,6 +104,10 @@ class YUMDistributionRequirementTestCase(unittest.TestCase):
 @unittest.skipIf(not is_executable_exists('zypper'),
                  'Zypper is not available on this platform')
 class ZypperDistributionRequirementTestCase(unittest.TestCase):
+
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(zypper='zypper')),
+                         'zypper')
 
     def test_installed_requirement(self):
         self.assertTrue(

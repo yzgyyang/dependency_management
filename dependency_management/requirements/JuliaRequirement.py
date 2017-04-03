@@ -27,6 +27,8 @@ class JuliaRequirement(PackageRequirement):
         'Lint'
         >>> pr.version
         '19.2'
+        >>> str(pr)
+        'Lint 19.2'
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string. Leave empty to specify latest version.

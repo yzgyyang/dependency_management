@@ -24,6 +24,8 @@ class RscriptRequirement(PackageRequirement):
         'formatR'
         >>> pr.version
         '1.4'
+        >>> str(pr)
+        'formatR 1.4'
         >>> pr.flag
         '-e'
         >>> pr.repo
