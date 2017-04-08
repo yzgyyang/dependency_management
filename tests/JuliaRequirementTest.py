@@ -1,5 +1,8 @@
 import shutil
 import unittest
+import unittest.mock
+
+import sarge
 
 from dependency_management.requirements.JuliaRequirement import (
     JuliaRequirement)
@@ -13,7 +16,13 @@ class JuliaRequirementTestCase(unittest.TestCase):
         self.assertEqual(str(JuliaRequirement('Lint', '0.5')), 'Lint 0.5')
 
     def test_installed_requirement(self):
-        self.assertTrue(JuliaRequirement("Lint").is_installed())
+        with unittest.mock.patch('dependency_management.requirements.' +
+                                 'JuliaRequirement.run') as mock:
+            patched = unittest.mock.Mock(spec=sarge.Pipeline)
+            patched.returncode = 0
+            mock.return_value = patched
+            self.assertTrue(JuliaRequirement(
+                'some_good_package').is_installed())
 
     def test_not_registered_requirement(self):
         self.assertFalse(JuliaRequirement("some_bad_package").is_installed())

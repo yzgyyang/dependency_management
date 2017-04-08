@@ -60,5 +60,5 @@ class JuliaRequirement(PackageRequirement):
         # with an error code different from 0.
         code = 'Pkg.installed("{}")==nothing?exit(1):exit(0)'.format(
             escape(self.package, '\\"'))
-        args = 'julia -e ' + code
+        args = 'julia -e ' + shlex.quote(code)
         return not run(args, stdout=Capture(), stderr=Capture()).returncode

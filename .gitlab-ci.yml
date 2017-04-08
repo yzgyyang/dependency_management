@@ -6,6 +6,7 @@ variables:
     r-base
     ruby
     php5
+    julia
 
 run_tests:
   image: python:3.5
