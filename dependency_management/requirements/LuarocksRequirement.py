@@ -4,7 +4,6 @@ from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
 
 from sarge import run, Capture
-import platform
 
 
 class LuarocksRequirement(PackageRequirement):
@@ -59,9 +58,6 @@ class LuarocksRequirement(PackageRequirement):
         :param return: True if dependency is installed, false otherwise.
         """
         cmd = 'luarocks show ' + self.package
-
-        if platform.system() == 'Windows':  # pragma: no cover
-            cmd = 'cmd + /c ' + cmd
 
         if not run(cmd, stdout=Capture(), stderr=Capture()).returncode:
             return True

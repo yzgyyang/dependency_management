@@ -4,7 +4,6 @@ from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
 
 from sarge import run, Capture
-import platform
 
 
 class NpmRequirement(PackageRequirement):
@@ -60,9 +59,6 @@ class NpmRequirement(PackageRequirement):
         """
         for cmd in ('npm list ' + self.package,
                     'npm list -g ' + self.package):
-
-            if platform.system() == 'Windows':  # pragma: no cover
-                cmd = 'cmd + /c ' + cmd
 
             if not run(cmd, stdout=Capture(), stderr=Capture()).returncode:
                 return True

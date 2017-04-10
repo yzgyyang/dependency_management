@@ -1,7 +1,7 @@
 import os
-import platform
 import shutil
 import unittest
+
 from dependency_management.requirements.GemRequirement import GemRequirement
 from sarge import run, Capture
 
@@ -9,8 +9,6 @@ GEM_INSTALLED_PACKAGE = os.environ.get(
     'GEM_INSTALLED_PACKAGE', 'rdoc')
 
 cmd = 'gem list -i ' + GEM_INSTALLED_PACKAGE
-if platform.system() == 'Windows':  # pragma: no cover
-    cmd = 'cmd /c ' + cmd
 
 
 @unittest.skipIf(shutil.which('gem') is None or bool(run(cmd,

@@ -1,5 +1,3 @@
-import platform
-
 from sarge import run, Capture
 
 from dependency_management.requirements.ExecutableRequirement import (
@@ -60,9 +58,6 @@ class CargoRequirement(PackageRequirement):
         :param return: True if dependency is installed, false otherwise.
         """
         cmd = 'cargo install --list | grep "^{}"'
-
-        if platform.system() == 'Windows':  # pragma: no cover
-            cmd = 'cmd + /c ' + cmd
 
         if not run(cmd.format(self.package), stdout=Capture(),
                    stderr=Capture()).returncode:

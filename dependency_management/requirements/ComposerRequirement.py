@@ -4,7 +4,6 @@ from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
 
 from sarge import run, Capture
-import platform
 
 
 class ComposerRequirement(PackageRequirement):
@@ -62,9 +61,6 @@ class ComposerRequirement(PackageRequirement):
         """
         for cmd in ('composer show ' + self.package,
                     'composer global show ' + self.package):
-
-            if platform.system() == 'Windows':  # pragma: no cover
-                cmd = 'cmd + /c ' + cmd
 
             if not run(cmd, stdout=Capture(), stderr=Capture()).returncode:
                 return True
