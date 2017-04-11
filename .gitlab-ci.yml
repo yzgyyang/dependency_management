@@ -13,6 +13,7 @@ run_tests:
   image: python:3.5
   cache:
     paths:
+    - ~/.cache/pip
     - vendor/
   script:
   - apt-get update -qq
