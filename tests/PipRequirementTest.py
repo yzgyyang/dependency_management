@@ -1,11 +1,15 @@
 import unittest
-import shutil
 import sys
+
 from dependency_management.requirements.PipRequirement import PipRequirement
 
 
-@unittest.skipIf(shutil.which('pip') is None, "Pip is not installed.")
 class PipRequirementTestCase(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        import pip
+        del pip
 
     def test__str__(self):
         self.assertEqual(str(PipRequirement('setuptools')), 'setuptools')
