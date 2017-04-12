@@ -9,7 +9,6 @@ variables:
     julia
     maven
   DEBIAN_OTHER_DEPS: >
-    wget
 
 before_script:
   - apt-get update -qq
@@ -27,7 +26,6 @@ run_tests:
   - apt-get install -y -qq $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
   # GemRequirementTest requires dummy gem 'ruby' which is not installed
   - gem install ruby
-  - wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > installer.sig
   - py.test
   - codecov
 
