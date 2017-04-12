@@ -5,6 +5,10 @@ from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
 
 
+class NoArgsNotImplementedError(NotImplementedError, TypeError):
+    pass
+
+
 class DistributionRequirement(PackageRequirement):
     """
     This class is a subclass of ``PackageRequirement``. It specifices the
@@ -50,6 +54,9 @@ class DistributionRequirement(PackageRequirement):
 
         :param manager_commands: comma separated (type='package') pairs.
         """
+        if not manager_commands:
+            raise NoArgsNotImplementedError(
+                'No package managers specified')
         self.package = manager_commands
 
     def __str__(self):

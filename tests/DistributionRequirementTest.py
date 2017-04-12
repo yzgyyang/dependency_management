@@ -123,21 +123,48 @@ class ExpectedErrorsDistributionRequirementTestCase(unittest.TestCase):
     NO_SUPPORTED_PACKAGE_MANAGER_RE = ("This platform doesn't have any of the "
                                        'supported package manager')
 
-    def test_no_supported_package_manager(self):
-        with self.assertRaisesRegex(
-                NotImplementedError,
-                self.NO_SUPPORTED_PACKAGE_MANAGER_RE):
-            DistributionRequirement().get_available_package_manager()
-
-    def test_platform_without_supported_package_manager(self):
-        pm_packages = DistributionRequirement.SUPPORTED_PACKAGE_MANAGERS
+    def _mock_test(self, managers, commands, exc=None, message=None):
         _shutil_which = shutil.which
+        dr = DistributionRequirement(**commands)
+
+        if isinstance(managers, dict):
+            allowed_exes = managers.values()
+        else:
+            allowed_exes = list(exe for manager, exe
+                                in dr.SUPPORTED_PACKAGE_MANAGERS.items()
+                                if manager in managers)
+
+        def fake_which(exe):
+            if exe in allowed_exes:
+                return True
+
         try:
-            shutil.which = lambda *args, **kwargs: None
+            shutil.which = fake_which
+
             with self.assertRaisesRegex(
-                    NotImplementedError,
-                    self.NO_SUPPORTED_PACKAGE_MANAGER_RE):
-                dr = DistributionRequirement(**pm_packages)
+                    exc,
+                    message):
                 dr.get_available_package_manager()
         finally:
             shutil.which = _shutil_which
+
+    def test_no_manager_commands(self):
+        with self.assertRaisesRegex(
+                NotImplementedError,
+                'No package managers specified'):
+            DistributionRequirement()
+
+        with self.assertRaisesRegex(
+                TypeError,
+                'No package managers specified'):
+            DistributionRequirement()
+
+    def test_platform_without_supported_package_manager(self):
+        pm_packages = DistributionRequirement.SUPPORTED_PACKAGE_MANAGERS
+        self._mock_test([], pm_packages, NotImplementedError,
+                        self.NO_SUPPORTED_PACKAGE_MANAGER_RE)
+
+    def test_no_supported_package_manager(self):
+        self._mock_test({'dummy': 'dummy'}, {'foo': 'bar'},
+                        NotImplementedError,
+                        'foo is not supported')
