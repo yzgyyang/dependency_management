@@ -122,17 +122,23 @@ class ExpectedErrorsDistributionRequirementTestCase(unittest.TestCase):
 
     NO_SUPPORTED_PACKAGE_MANAGER_RE = ("This platform doesn't have any of the "
                                        'supported package manager')
+    NO_SPECIFIED_PACKAGE_MANAGER_RE = (
+        "This platform doesn't have any of the "
+        'specified package manager')
 
     def _mock_test(self, managers, commands, exc=None, message=None):
         _shutil_which = shutil.which
         dr = DistributionRequirement(**commands)
+        old_managers = dr._available_managers
 
         if isinstance(managers, dict):
             allowed_exes = managers.values()
+            dr._available_managers = managers.keys()
         else:
             allowed_exes = list(exe for manager, exe
                                 in dr.SUPPORTED_PACKAGE_MANAGERS.items()
                                 if manager in managers)
+            dr._available_managers = None
 
         def fake_which(exe):
             if exe in allowed_exes:
@@ -141,11 +147,17 @@ class ExpectedErrorsDistributionRequirementTestCase(unittest.TestCase):
         try:
             shutil.which = fake_which
 
+            if not exc:
+                # Force caching of all package managers
+                dr.package_managers
+                return dr
+
             with self.assertRaisesRegex(
                     exc,
                     message):
                 dr.get_available_package_manager()
         finally:
+            dr._available_managers = old_managers
             shutil.which = _shutil_which
 
     def test_no_manager_commands(self):
@@ -163,6 +175,15 @@ class ExpectedErrorsDistributionRequirementTestCase(unittest.TestCase):
         pm_packages = DistributionRequirement.SUPPORTED_PACKAGE_MANAGERS
         self._mock_test([], pm_packages, NotImplementedError,
                         self.NO_SUPPORTED_PACKAGE_MANAGER_RE)
+
+    def test_platform_without_specified_package_manager(self):
+        self._mock_test(['dnf'], {'yum': 'yum'}, NotImplementedError,
+                        self.NO_SPECIFIED_PACKAGE_MANAGER_RE)
+
+    def test_platform_with_multiple_package_manager(self):
+        managers = DistributionRequirement.SUPPORTED_PACKAGE_MANAGERS
+        r = self._mock_test(managers.keys(), managers)
+        self.assertCountEqual(r.package_managers, managers.keys())
 
     def test_no_supported_package_manager(self):
         self._mock_test({'dummy': 'dummy'}, {'foo': 'bar'},

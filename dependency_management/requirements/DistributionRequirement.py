@@ -27,6 +27,7 @@ class DistributionRequirement(PackageRequirement):
         'yum': 'yum',
         'zypper': 'zypper',
     }
+    _available_managers = None
 
     """
     List of commands that can be used to verify if the package is installed.
@@ -54,6 +55,9 @@ class DistributionRequirement(PackageRequirement):
 
         :param manager_commands: comma separated (type='package') pairs.
         """
+        self._managers = None
+        self._manager = None
+
         if not manager_commands:
             raise NoArgsNotImplementedError(
                 'No package managers specified')
@@ -74,16 +78,79 @@ class DistributionRequirement(PackageRequirement):
 
         :return: Supported package manager key
         """
+        if not self._manager:
+            self._manager = next(self.get_package_managers())
+        return self._manager
+
+    def get_package_managers(self):
+        """
+        Yield package managers that can satisfy requirement.
+
+        :raises NotImplementedError:
+             There are no package managers for requirement.
+        """
+        found = False
+        available_managers = self.available_package_managers
+        supported_managers = self.SUPPORTED_PACKAGE_MANAGERS.keys()
         for manager in self.package.keys():
-            try:
-                executable = self.SUPPORTED_PACKAGE_MANAGERS[manager]
-                if is_executable_exists(executable):
-                    return manager
-            except KeyError:
+            if manager in available_managers:
+                found = True
+                yield manager
+            elif manager not in supported_managers:
                 raise NotImplementedError("{} is not supported".format(manager))
+        if found:
+            return
+
         raise NotImplementedError("This platform doesn't have any of the "
-                                  'supported package manager(s): '
+                                  'specified package manager(s): '
                                   '{}'.format(','.join(self.package.keys())))
+
+    @property
+    def package_managers(self):
+        """
+        Return package managers that can satisfy requirement.
+
+        :raises NotImplementedError:
+             There are no package managers for requirement.
+        """
+        if self._managers is None:
+            self._managers = list(
+                self.get_package_managers())
+        return self._managers
+
+    @property
+    def available_package_managers(self):
+        """
+        Return all available package managers.
+
+        :raises NotImplementedError:
+             There are no package managers for requirement.
+        """
+        if self._available_managers is None:
+            self._available_managers = list(
+                self.get_all_available_package_managers())
+        return self._available_managers
+
+    @classmethod
+    def get_all_available_package_managers(self):
+        """
+        Yield the available package managers.
+
+        :raises NotImplementedError:
+            There are no supported package managers.
+        """
+        found = False
+        for manager, exe in self.SUPPORTED_PACKAGE_MANAGERS.items():
+            if is_executable_exists(exe):
+                found = True
+                yield manager
+        if found:
+            return
+
+        raise NotImplementedError(
+            "This platform doesn't have any of the supported package "
+            'manager(s): {}'
+            .format(', '.join(self.SUPPORTED_PACKAGE_MANAGERS)))
 
     def is_installed(self):
         """

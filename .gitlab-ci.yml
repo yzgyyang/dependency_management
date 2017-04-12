@@ -33,7 +33,7 @@ run_tests:
   - apt-get install -y $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
   # GemRequirementTest requires dummy gem 'ruby' which is not installed
   - gem install ruby
-  - py.test
+  - py.test --cov-fail-under=100
   - codecov
 
 check_code:
