@@ -46,3 +46,11 @@ class MavenRequirementTestCase(unittest.TestCase):
             self.assertEqual(str(log.exception),
                              '__init__() missing 1 required positional '
                              "argument: 'version'")
+
+
+class MavenCheckstyleRequirementTestCase(unittest.TestCase):
+
+    def test_install(self):
+        r = MavenRequirement('com.puppycrawl.tools:checkstyle', '6.15')
+        sarge.run(r.install_command())
+        self.assertTrue(r.is_installed())

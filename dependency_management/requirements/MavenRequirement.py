@@ -51,20 +51,19 @@ class MavenRequirement(PackageRequirement):
         """
         Creates the installation command for the instance of the class.
 
-        >>> MavenRequirement(
+        >>> from pprint import pprint
+        >>> r = MavenRequirement(
         ...     'com.puppycrawl.tools:checkstyle', '6.15',
-        ...     'https://repo.maven.apache.org/maven2').install_command()
-        'mvn org.apache.maven.plugins:maven-dependency-plugin:2.1:get \
-                       -DrepoUrl=https://repo.maven.apache.org/maven2/ \
-                       -Dartifact=com.puppycrawl.tools:checkstyle:6.15'
+        ...     'https://repo.maven.apache.org/maven2')
+        >>> pprint(r.install_command())
+        ('mvn dependency:get -DrepoUrl=https://repo.maven.apache.org/maven2/ '
+         '-Dartifact=com.puppycrawl.tools:checkstyle:6.15')
+
 
         :param return: A string with the installation command.
         """
-        result = ('mvn org.apache.maven.plugins:maven-dependency'
-                  '-plugin:2.1:get \
-                       -DrepoUrl={}/ \
-                       -Dartifact={}:{}'.format(self.repo, self.package,
-                                                self.version))
+        result = ('mvn dependency:get -DrepoUrl={}/ -Dartifact={}:{}'
+                  .format(self.repo, self.package, self.version))
         return result
 
     def is_installed(self):

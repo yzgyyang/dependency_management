@@ -9,6 +9,7 @@ variables:
     julia
     maven
   DEBIAN_OTHER_DEPS: >
+    oracle-java7-installer
 
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
@@ -24,8 +25,11 @@ run_tests:
     - ~/.cache/pip
     - vendor/
   script:
-  
-  - apt-get install -y -qq $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
+  - apt-get install -y -qq software-properties-common
+  - echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+  - add-apt-repository -y ppa:webupd8team/java
+  - apt-get update -qq
+  - apt-get install -y $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
   # GemRequirementTest requires dummy gem 'ruby' which is not installed
   - gem install ruby
   - py.test
