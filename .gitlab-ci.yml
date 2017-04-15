@@ -1,6 +1,6 @@
 variables:
   DEBIAN_PACKAGE_MANAGERS: >
-    cabal-install ghc haskell-platform
+    cabal-install ghc
     composer
     golang
     npm
