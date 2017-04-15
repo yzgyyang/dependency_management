@@ -54,6 +54,18 @@ class DistributionRequirement(PackageRequirement):
         'yum': 'rpm -qa | grep "^{}"',
         'zypper': 'rpm -qa | grep "^{}"',
     }
+    """
+    List of commands that can be used to install a package.
+    """
+    _INSTALL_COMMANDS = {
+        'apt_get': ('apt-get', 'install', '--yes'),
+        'dnf': ('dnf', 'install', '--assumeyes'),
+        'pacman': ('pacman', ),
+        'portage': ('emerge', ),
+        'xbps': ('xbps-install', '--yes'),
+        'yum': ('yum', 'install', '--assumeyes'),
+        'zypper': ('zypper', '--non-interactive', 'install'),
+    }
 
     def __init__(self, package: str=None, version='', repo='',
                  **package_overrides):
@@ -236,3 +248,21 @@ class DistributionRequirement(PackageRequirement):
         package = self.packages[package_manager]
         return not run(command.format(package),
                        stdout=Capture(), stderr=Capture()).returncode
+
+    def install_command(self):
+        """
+        Creates the installation command for the instance of the class.
+
+        >>> DistributionRequirement('indent').install_command()[-1]
+        'indent'
+
+        :param return: A list with the installation command.
+        """
+        package_manager = self.get_available_package_manager()
+        package = self.packages[package_manager]
+
+        command = list(self._INSTALL_COMMANDS[package_manager])
+
+        command.append(package)
+
+        return command

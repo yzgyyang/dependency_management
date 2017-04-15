@@ -1,6 +1,8 @@
 import shutil
 import unittest
 
+import sarge
+
 from dependency_management.Helper import is_executable_exists
 from dependency_management.requirements.DistributionRequirement import (
     DistributionRequirement)
@@ -116,6 +118,14 @@ class ZypperDistributionRequirementTestCase(unittest.TestCase):
     def test_not_installed_requirement(self):
         self.assertFalse(
             DistributionRequirement(zypper='some_bad_package').is_installed())
+
+
+class DistributionDiffstatRequirementTestCase(unittest.TestCase):
+
+    def test_install(self):
+        r = DistributionRequirement('diffstat')
+        r.install_package()
+        self.assertTrue(r.is_installed())
 
 
 class ExpectedErrorsDistributionRequirementTestCase(unittest.TestCase):
