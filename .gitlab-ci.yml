@@ -32,8 +32,6 @@ run_tests:
   - add-apt-repository -y ppa:webupd8team/java
   - apt-get update -qq
   - apt-get install -y $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
-  # GemRequirementTest requires dummy gem 'ruby' which is not installed
-  - gem install ruby
   - py.test --cov-fail-under=100
   - codecov
 

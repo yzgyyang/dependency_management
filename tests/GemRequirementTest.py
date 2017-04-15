@@ -1,10 +1,14 @@
+import os
 import platform
 import shutil
 import unittest
 from dependency_management.requirements.GemRequirement import GemRequirement
 from sarge import run, Capture
 
-cmd = 'gem list -i ruby'
+GEM_INSTALLED_PACKAGE = os.environ.get(
+    'GEM_INSTALLED_PACKAGE', 'rdoc')
+
+cmd = 'gem list -i ' + GEM_INSTALLED_PACKAGE
 if platform.system() == 'Windows':  # pragma: no cover
     cmd = 'cmd /c ' + cmd
 
@@ -21,7 +25,7 @@ class GemRequirementTestCase(unittest.TestCase):
         self.assertEqual(str(GemRequirement('ruby', '2.4.1')), 'ruby 2.4.1')
 
     def test_installed_requirement(self):
-        self.assertTrue(GemRequirement('ruby').is_installed())
+        self.assertTrue(GemRequirement(GEM_INSTALLED_PACKAGE).is_installed())
 
     def test_not_installed_requirement(self):
         self.assertFalse(GemRequirement('some_bad_package').is_installed())
