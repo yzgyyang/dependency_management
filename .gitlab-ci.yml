@@ -11,6 +11,7 @@ variables:
   DEBIAN_OTHER_DEPS: >
 
 before_script:
+  - export DEBIAN_FRONTEND=noninteractive
   - apt-get update -qq
   - apt-get install -y -qq python3 python3-pip
   - pip3 install --upgrade pip setuptools
@@ -23,6 +24,7 @@ run_tests:
     - ~/.cache/pip
     - vendor/
   script:
+  
   - apt-get install -y -qq $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
   # GemRequirementTest requires dummy gem 'ruby' which is not installed
   - gem install ruby
