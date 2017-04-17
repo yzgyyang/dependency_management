@@ -52,5 +52,5 @@ class MavenCheckstyleRequirementTestCase(unittest.TestCase):
 
     def test_install(self):
         r = MavenRequirement('com.puppycrawl.tools:checkstyle', '6.15')
-        sarge.run(r.install_command())
+        r.install_package()
         self.assertTrue(r.is_installed())

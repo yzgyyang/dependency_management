@@ -60,6 +60,13 @@ class PackageRequirement:
         """
         Returns a string with the installation command, to be used by
         "install_package()".
+
+        >>> PackageRequirement('pip', 'pip').install_package()
+        Traceback (most recent call last):
+        ...
+        NotImplementedError
+
+        :raises NotImplementedError: Method is not implemented
         """
         raise NotImplementedError
 
@@ -75,5 +82,6 @@ class PackageRequirement:
         NotImplementedError
 
         :return: Returns True if satisfied, False if not.
+        :raises NotImplementedError: Method is not implemented
         """
         raise NotImplementedError

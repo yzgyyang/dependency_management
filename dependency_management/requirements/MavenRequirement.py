@@ -56,14 +56,18 @@ class MavenRequirement(PackageRequirement):
         ...     'com.puppycrawl.tools:checkstyle', '6.15',
         ...     'https://repo.maven.apache.org/maven2')
         >>> pprint(r.install_command())
-        ('mvn dependency:get -DrepoUrl=https://repo.maven.apache.org/maven2/ '
-         '-Dartifact=com.puppycrawl.tools:checkstyle:6.15')
+        ['mvn',
+         'dependency:get',
+         '-DrepoUrl=https://repo.maven.apache.org/maven2/',
+         '-Dartifact=com.puppycrawl.tools:checkstyle:6.15']
 
 
         :param return: A string with the installation command.
         """
-        result = ('mvn dependency:get -DrepoUrl={}/ -Dartifact={}:{}'
-                  .format(self.repo, self.package, self.version))
+        result = ['mvn', 'dependency:get',
+                  '-DrepoUrl={}/'.format(self.repo),
+                  '-Dartifact={}:{}'.format(self.package, self.version)
+                  ]
         return result
 
     def is_installed(self):
