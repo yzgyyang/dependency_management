@@ -10,7 +10,11 @@ class RscriptRequirement(PackageRequirement):
     for the requirement.
     """
 
-    def __init__(self, package, version="", flag="", repo=""):
+    def __init__(self,
+                 package,
+                 version="",
+                 flag="",
+                 repo="http://cran.rstudio.com"):
         """
         Constructs a new ``RscriptRequirement``, using the
         ``PackageRequirement`` constructor.
