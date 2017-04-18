@@ -41,12 +41,18 @@ class GemRequirement(PackageRequirement):
         ['gem', 'install', 'rubocop']
 
         >>> GemRequirement('scss_lint', '', 'false').install_command()
-        ['gem', 'install', 'scss_lint, require: false']
+        ['gem', 'install', 'scss_lint']
+
+        >>> GemRequirement('rake', '10.5.0').install_command()
+        ['gem', 'install', 'rake:10.5.0']
 
         :param return: A string with the installation command.
         """
-        result = ['gem', 'install', self.package + ', require: ' + self.require
-                  if self.require else self.package]
+
+        gem = self.package
+        if self.version:
+            gem += ':' + self.version
+        result = ['gem', 'install', gem]
         return result
 
     def is_installed(self):
