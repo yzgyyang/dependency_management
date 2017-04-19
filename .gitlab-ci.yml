@@ -3,6 +3,7 @@ variables:
     cabal-install ghc
     composer
     golang
+    luarocks
     npm
     r-base
     ruby
