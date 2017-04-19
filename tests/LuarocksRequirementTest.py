@@ -28,6 +28,8 @@ class LuarocksRequirementTestCase(unittest.TestCase):
         self.assertFalse(LuarocksRequirement('some_bad_package').is_installed())
 
 
+@unittest.skipIf(shutil.which('luarocks') is None,
+                 'luarocks is not installed.')
 class LuarocksLuacheckRequirementTestCase(unittest.TestCase):
 
     def test_install(self):
