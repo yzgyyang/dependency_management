@@ -1,5 +1,8 @@
+from dependency_management.requirements.ExecutableRequirement import (
+    ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
+
 from sarge import run, Capture
 
 
@@ -9,6 +12,8 @@ class GoRequirement(PackageRequirement):
     type for ``go`` packages automatically and provide a function to check
     for the requirement.
     """
+
+    REQUIREMENTS = {ExecutableRequirement('go')}
 
     def __init__(self, package, version="", flag=""):
         """

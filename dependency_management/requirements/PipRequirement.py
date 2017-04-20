@@ -1,5 +1,8 @@
+from dependency_management.requirements.ExecutableRequirement import (
+    ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
+
 from sarge import run, Capture
 import sys
 
@@ -10,6 +13,8 @@ class PipRequirement(PackageRequirement):
     type for ``python`` packages automatically and provide a function to check
     for the requirement.
     """
+
+    REQUIREMENTS = {ExecutableRequirement(sys.executable)}
 
     def __init__(self, package, version=""):
         """

@@ -2,6 +2,8 @@ import re
 
 from sarge import run, Capture
 
+from dependency_management.requirements.ExecutableRequirement import (
+    ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
 
@@ -12,6 +14,8 @@ class MavenRequirement(PackageRequirement):
     type for ``java`` packages automatically and provide a function to check
     for the requirement.
     """
+
+    REQUIREMENTS = {ExecutableRequirement('mvn')}
 
     def __init__(self, package, version: str,
                  repo="https://repo.maven.apache.org/maven2"):

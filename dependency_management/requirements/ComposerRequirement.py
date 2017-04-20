@@ -1,5 +1,8 @@
+from dependency_management.requirements.ExecutableRequirement import (
+    ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
+
 from sarge import run, Capture
 import platform
 
@@ -10,6 +13,8 @@ class ComposerRequirement(PackageRequirement):
     type for ``Composer`` packages automatically and provides a function to
     check for the requirement.
     """
+
+    REQUIREMENTS = {ExecutableRequirement('composer')}
 
     def __init__(self, package, version=""):
         """

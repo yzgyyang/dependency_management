@@ -18,6 +18,8 @@ class PackageRequirement:
     True
     """
 
+    REQUIREMENTS = {}
+
     def __init__(self, type: str, package: str, version=""):
         """
         Constructs a new ``PackageRequirement``.

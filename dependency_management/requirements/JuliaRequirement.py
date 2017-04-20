@@ -1,7 +1,10 @@
 import shlex
 
+from dependency_management.requirements.ExecutableRequirement import (
+    ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
+
 from sarge import Capture
 from sarge import run
 
@@ -14,6 +17,8 @@ class JuliaRequirement(PackageRequirement):
     type for ``julia`` packages automatically and provide a function to check
     for the requirement.
     """
+
+    REQUIREMENTS = {ExecutableRequirement('julia')}
 
     def __init__(self, package, version=""):
         """
