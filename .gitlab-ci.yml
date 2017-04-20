@@ -1,6 +1,7 @@
 variables:
   DEBIAN_PACKAGE_MANAGERS: >
     cabal-install ghc
+    cargo
     composer
     golang
     luarocks
