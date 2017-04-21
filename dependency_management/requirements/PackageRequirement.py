@@ -2,7 +2,7 @@ from coala_utils.decorators import generate_eq, generate_repr
 from sarge import run, Capture
 
 
-@generate_eq("type", "package", "version")
+@generate_eq("type", "package", "version", "repo")
 @generate_repr()
 class PackageRequirement:
     """
@@ -20,7 +20,7 @@ class PackageRequirement:
 
     REQUIREMENTS = {}
 
-    def __init__(self, type: str, package: str, version=""):
+    def __init__(self, type: str, package: str, version="", repo=""):
         """
         Constructs a new ``PackageRequirement``.
 
@@ -37,10 +37,13 @@ class PackageRequirement:
         :param type:    A string with the name of the manager (pip, npm, etc).
         :param package: A string with the name of the package to be installed.
         :param version: A version string. Leave empty to specify latest version.
+        :param repo:    The repository from which the package is to be
+                        installed.
         """
         self.type = type
         self.package = package
         self.version = version
+        self.repo = repo
 
     def __str__(self):
         """

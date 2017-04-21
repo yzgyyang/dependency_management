@@ -47,9 +47,8 @@ class RscriptRequirement(PackageRequirement):
         :param repo:    The repository from which the package to be installed is
                         from.
         """
-        PackageRequirement.__init__(self, 'R', package, version)
+        PackageRequirement.__init__(self, 'R', package, version, repo)
         self.flag = flag
-        self.repo = repo
 
     def install_command(self):
         """

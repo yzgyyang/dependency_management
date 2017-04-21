@@ -48,8 +48,7 @@ class MavenRequirement(PackageRequirement):
             raise ValueError(
                 'The package must be of the form [groupId:artifactId]')
 
-        PackageRequirement.__init__(self, 'mvn', package, version)
-        self.repo = repo
+        PackageRequirement.__init__(self, 'mvn', package, version, repo)
 
     def install_command(self):
         """
