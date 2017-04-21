@@ -4,6 +4,7 @@ environment:
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\.ci\\run_with_env.cmd"
+    PIP_CACHE_DIR: C:\pip_cache
 
   matrix:
     - PYTHON: "C:\\Python34"
@@ -35,7 +36,7 @@ install:
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
-  - "%CMD_IN_ENV% pip install --cache-dir=C:\\pip_cache -r requirements.txt -r test-requirements.txt"
+  - "%CMD_IN_ENV% pip install -r requirements.txt -r test-requirements.txt"
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
