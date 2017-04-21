@@ -66,7 +66,7 @@ class PortageDistributionRequirementTestCase(unittest.TestCase):
             DistributionRequirement(portage='portage').is_installed())
 
     def test_not_installed_requirement(self):
-        self.assertTrue(
+        self.assertFalse(
             DistributionRequirement(portage='some_bad_package').is_installed())
 
 
