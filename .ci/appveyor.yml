@@ -43,7 +43,6 @@ test_script:
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% py.test"
   - "%CMD_IN_ENV% pip install coala-bears"
-  - "%CMD_IN_ENV% python -m nltk.downloader punkt maxent_treebank_pos_tagger averaged_perceptron_tagger"
   - "%CMD_IN_ENV% coala --ci"
 
 on_success:
