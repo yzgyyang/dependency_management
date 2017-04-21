@@ -48,6 +48,7 @@ class MavenRequirementTestCase(unittest.TestCase):
                              "argument: 'version'")
 
 
+@unittest.skipIf(shutil.which('mvn') is None, "Maven is not installed.")
 class MavenCheckstyleRequirementTestCase(unittest.TestCase):
 
     def test_install(self):
