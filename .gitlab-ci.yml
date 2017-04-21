@@ -13,6 +13,12 @@ variables:
   DEBIAN_OTHER_DEPS: >
     oracle-java7-installer
 
+cache:
+  paths:
+    - ~/.local/share/coala-bears/
+    - ~/.cache/pip
+    - vendor/
+
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
   - apt-get update -qq
@@ -22,27 +28,19 @@ before_script:
 
 run_tests:
   image: ubuntu:rolling
-  cache:
-    paths:
-    - ~/.cache/pip
-    - vendor/
   script:
-  - apt-get install -y -qq software-properties-common
-  - echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-  - add-apt-repository -y ppa:webupd8team/java
-  - apt-get update -qq
-  - apt-get install -y $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
-  - py.test --cov-fail-under=100
-  - codecov
+    - apt-get install -y -qq software-properties-common
+    - echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+    - add-apt-repository -y ppa:webupd8team/java
+    - apt-get update -qq
+    - apt-get install -y $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
+    - py.test --cov-fail-under=100
+    - codecov
 
 check_code:
   image: ubuntu:rolling
-  cache:
-    paths:
-    - ~/.cache/pip
-    - ~/.local/share/coala-bears/
   script:
-  - apt-get install -y -qq git
-  - pip3 install .
-  - pip3 install --pre coala-bears
-  - coala-ci
+    - apt-get install -y -qq git
+    - pip3 install .
+    - pip3 install --pre coala-bears
+    - coala-ci
