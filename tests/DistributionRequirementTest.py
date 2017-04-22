@@ -130,6 +130,7 @@ class ExpectedErrorsDistributionRequirementTestCase(unittest.TestCase):
         _shutil_which = shutil.which
         dr = DistributionRequirement(**commands)
         old_managers = dr._available_managers
+        dr._manager = None
 
         if isinstance(managers, dict):
             allowed_exes = managers.values()

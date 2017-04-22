@@ -1,3 +1,5 @@
+from collections import Counter
+
 from sarge import run, Capture
 
 from dependency_management.Helper import is_executable_exists
@@ -42,32 +44,77 @@ class DistributionRequirement(PackageRequirement):
         'zypper': 'rpm -qa | grep "^{}"',
     }
 
-    def __init__(self, **manager_commands):
+    def __init__(self, package: str=None, version='', repo='',
+                 **package_overrides):
         """
         Constructs a new ``DistributionRequirement``, using the
         ``PackageRequirement`` constructor.
 
-        >>> dr = DistributionRequirement(apt_get='libclang', dnf='libclangg')
-        >>> dr.package['apt_get']
+        When a ``package`` name is provided, it is used as the
+        package attribute, even when override package names are
+        provided for specific package managers.
+
+        >>> dr = DistributionRequirement(package='clang',
+        ...                              apt_get='libclang',
+        ...                              dnf='libclangg')
+        >>> dr.package
+        'clang'
+        >>> dr.packages['apt_get']
         'libclang'
-        >>> dr.package['dnf']
+        >>> dr.packages['dnf']
         'libclangg'
 
-        :param manager_commands: comma separated (type='package') pairs.
+        When no ``package`` name is provided, the override package name
+        for the local host's package manager is used if possible,
+        otherwise the most common override is used.
+
+        >>> dr = DistributionRequirement(unknown1='libclangg',
+        ...                              unknown2='libclang',
+        ...                              unknown3='libclang')
+        >>> dr.package
+        'libclang'
+        >>> dr.packages['unknown1']
+        'libclangg'
+        >>> dr.packages['unknown2']
+        'libclang'
+        >>> dr.packages['unknown3']
+        'libclang'
+
+        :param package: A string with the name of the package to be installed.
+        :param version: A version string.  Unused.
+        :param repo:    The repository from which the package is to be
+                        installed.  Unused.
+        :param kwargs: Override package names for supported package managers.
         """
         self._managers = None
         self._manager = None
+        self.packages = package_overrides
 
-        if not manager_commands:
+        if not package and not package_overrides:
             raise NoArgsNotImplementedError(
                 'No package managers specified')
-        self.package = manager_commands
 
-    def __str__(self):
-        """
-        Just return package name based on available package manager.
-        """
-        return self.package[self.get_available_package_manager()]
+        if package:
+            defaults = {(pm, package)
+                        for pm in self.SUPPORTED_PACKAGE_MANAGERS.keys()
+                        if pm not in package_overrides}
+            self.packages.update(defaults)
+
+        else:
+            package = self._get_best_package_name()
+
+        PackageRequirement.__init__(self, 'distribution', package, version)
+
+    def _get_best_package_name(self):
+        package_names = Counter(self.packages.values())
+
+        if len(package_names) == 1:
+            return package_names.most_common()[0][0]
+
+        try:
+            return self.packages[self.get_available_package_manager()]
+        except NotImplementedError:
+            return package_names.most_common()[0][0]
 
     def get_available_package_manager(self):
         """
@@ -92,7 +139,7 @@ class DistributionRequirement(PackageRequirement):
         found = False
         available_managers = self.available_package_managers
         supported_managers = self.SUPPORTED_PACKAGE_MANAGERS.keys()
-        for manager in self.package.keys():
+        for manager in self.packages.keys():
             if manager in available_managers:
                 found = True
                 yield manager
@@ -103,7 +150,7 @@ class DistributionRequirement(PackageRequirement):
 
         raise NotImplementedError("This platform doesn't have any of the "
                                   'specified package manager(s): '
-                                  '{}'.format(','.join(self.package.keys())))
+                                  '{}'.format(','.join(self.packages.keys())))
 
     @property
     def package_managers(self):
@@ -165,6 +212,6 @@ class DistributionRequirement(PackageRequirement):
 
         package_manager = self.get_available_package_manager()
         command = self.CHECKER_COMMANDS[package_manager]
-        package = self.package[package_manager]
+        package = self.packages[package_manager]
         return not run(command.format(package),
                        stdout=Capture(), stderr=Capture()).returncode
