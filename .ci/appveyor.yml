@@ -18,10 +18,15 @@ environment:
 cache:
   - "C:\\pip_cache"
   - "C:\\Users\\appveyor\\AppData\\Roaming\\nltk_data"
+  - "C:\\tools\\composer"
+  - "%LOCALAPPDATA%\\Composer"
 
 branches:
   except:
     - /^sils\/.*/
+
+init:
+  - ps: $Env:PATH = 'c:\tools\composer\;' + $Env:PATH
 
 install:
   # Prepend msys with pacman to PATH.
@@ -37,6 +42,25 @@ install:
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
   - "%CMD_IN_ENV% pip install -r requirements.txt -r test-requirements.txt"
+  # Enable Windows Update
+  # This is required for one of the dependencies of the Chocolatey PHP package
+  - sc config wuauserv start=auto
+  - net start wuauserv
+  # The following installs and sets up PHP
+  - cinst -y php
+  - copy C:\tools\php71\php.ini-production C:\tools\php71\php.ini
+  - echo date.timezone="UTC" >> C:\tools\php71\php.ini
+  - echo extension_dir=ext >> C:\tools\php71\php.ini
+  - echo extension=php_openssl.dll >> C:\tools\php71\php.ini
+  - SET PATH=C:\tools\php71\;%PATH%
+  # Prepare Composer
+  - ps: If ((Test-Path c:\tools\composer) -eq $False) {
+        New-Item -Path c:\tools\composer -ItemType 'directory' }
+  - ps: If ((Test-Path c:\tools\composer\composer.phar) -eq $False) {
+        appveyor DownloadFile https://getcomposer.org/composer.phar
+        -FileName c:\tools\composer\composer.phar }
+  - ps: Set-Content -Path c:\tools\composer\composer.bat -Value (
+        '@php c:\tools\composer\composer.phar %*')
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
