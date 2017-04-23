@@ -9,11 +9,22 @@ variables:
     npm
     python3-pip
     r-base
-    ruby
+    rubygems
     julia
     maven
   DEBIAN_OTHER_DEPS: >
     oracle-java7-installer
+  FEDORA_OTHER_DEPS: >
+    lua-devel
+    rubygem-rdoc
+  # codecov depends on git, which is not default on openSUSE image
+  # curl and unzip are needed by luarocks
+  OPENSUSE_OTHER_DEPS: >
+    curl
+    git
+    java-1_7_0-openjdk
+    lua-devel
+    unzip
 
 cache:
   paths:
@@ -27,7 +38,7 @@ cache:
   - py.test --cov-fail-under=100
   - codecov
 
-run_tests:
+test:ubuntu_rolling:
   image: ubuntu:rolling
   before_script:
     - apt-get update -qq
@@ -37,6 +48,48 @@ run_tests:
     - add-apt-repository -y ppa:webupd8team/java
     - apt-get update -qq
     - apt-get install -y $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
+  script: *common_script
+
+test:fedora_25:
+  image: fedora:25
+  variables:
+    PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS
+  before_script:
+    - echo 'install_weak_deps=False' >> /etc/dnf/dnf.conf
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R-base}
+    # Installing Java 7 for checkstyle 6.19 is problematic
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/maven/}
+    - rm dependency_management/requirements/MavenRequirement.py
+         tests/MavenRequirementTest.py
+    - dnf install -y $PACKAGE_MANAGERS $FEDORA_OTHER_DEPS
+  script: *common_script
+
+test:opensuse_leap:
+  image: opensuse:leap
+  variables:
+    PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS
+    REPOS_BASE: http://download.opensuse.org/repositories
+    RELEASE: openSUSE_Leap_42.2
+    LUAROCKS_REPO: devel:languages:lua
+    CARGO_REPO: home:Ledest:devel
+  before_script:
+    - zypper removerepo 'NON-OSS' 'Update Non-Oss'
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R-base}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/golang/go}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/composer/php-composer}
+    # Installing Java 7 for checkstyle 6.19 is problematic
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/maven/}
+    - rm dependency_management/requirements/MavenRequirement.py
+         tests/MavenRequirementTest.py
+    # luarocks
+    - zypper addrepo $REPOS_BASE/$LUAROCKS_REPO/$RELEASE/$LUAROCKS_REPO.repo
+    # cargo
+    - zypper addrepo $REPOS_BASE/$CARGO_REPO/$RELEASE/$CARGO_REPO.repo
+    - zypper --no-gpg-checks --non-interactive install
+             $PACKAGE_MANAGERS $OPENSUSE_OTHER_DEPS
+    # go list requires /usr/lib64/go/src/runtime/internal/sys/zversion.go
+    - mkdir -p /usr/lib64/go/src/runtime/internal/sys/
+    - touch /usr/lib64/go/src/runtime/internal/sys/zversion.go
   script: *common_script
 
 check_code:
