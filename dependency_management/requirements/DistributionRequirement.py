@@ -17,7 +17,7 @@ class NoArgsNotImplementedError(NotImplementedError, TypeError):
 
 class DistributionRequirement(PackageRequirement):
     """
-    This class is a subclass of ``PackageRequirement``. It specifices the
+    This class is a subclass of ``PackageRequirement``. It specifies the
     proper type automatically.
     """
 
