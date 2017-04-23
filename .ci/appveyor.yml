@@ -29,6 +29,7 @@ cache:
   - "C:\\tools\\composer"
   - "%LOCALAPPDATA%\\Composer"
   - "C:\\tools\\julia"
+  - "C:\\tools\\rust"
 
 branches:
   except:
@@ -80,6 +81,15 @@ install:
   - ps: If ((Test-Path c:\tools\julia\bin\julia.exe) -eq $False) {
         C:\tools\julia-binary.exe /VERYSILENT /NORESTART /DIR=C:\tools\julia }
   - SET PATH=C:\tools\julia\bin\;%PATH%
+  # Preparing cargo
+  - ps: If ((Test-Path c:\tools\julia\bin\julia.exe) -eq $False) {
+        (new-object net.webclient).DownloadFile(
+        $("https://static.rust-lang.org/dist/"+
+        "rust-nightly-i686-pc-windows-gnu.exe"),
+        "C:\tools\rust-binary.exe") }
+  - ps: If ((Test-Path c:\tools\rust\bin\rustc.exe) -eq $False) {
+        C:\tools\rust-binary.exe /VERYSILENT /NORESTART /DIR=C:\tools\rust }
+  - SET PATH=C:\tools\rust\bin;%PATH%
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
