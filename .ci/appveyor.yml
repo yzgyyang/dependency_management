@@ -28,6 +28,7 @@ cache:
   - "C:\\Users\\appveyor\\AppData\\Roaming\\nltk_data"
   - "C:\\tools\\composer"
   - "%LOCALAPPDATA%\\Composer"
+  - "C:\\tools\\julia"
 
 branches:
   except:
@@ -69,6 +70,16 @@ install:
         -FileName c:\tools\composer\composer.phar }
   - ps: Set-Content -Path c:\tools\composer\composer.bat -Value (
         '@php c:\tools\composer\composer.phar %*')
+  # Download most recent Julia Windows binary
+  - ps: If ((Test-Path c:\tools\julia) -eq $False) {
+        (new-object net.webclient).DownloadFile(
+        $("http://s3.amazonaws.com/julialang/"+
+        "bin/winnt/x86/0.5/julia-0.5-latest-win32.exe"),
+        "C:\tools\julia-binary.exe") }
+  # Run installer silently, output to C:\tools\julia
+  - ps: If ((Test-Path c:\tools\julia\bin\julia.exe) -eq $False) {
+        C:\tools\julia-binary.exe /VERYSILENT /NORESTART /DIR=C:\tools\julia }
+  - SET PATH=C:\tools\julia\bin\;%PATH%
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
