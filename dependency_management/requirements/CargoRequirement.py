@@ -13,7 +13,10 @@ class CargoRequirement(PackageRequirement):
     check for the requirement.
     """
 
-    REQUIREMENTS = {ExecutableRequirement('cargo')}
+    REQUIREMENTS = {
+        ExecutableRequirement('cargo'),
+        ExecutableRequirement('grep'),
+    }
 
     def __init__(self, package, version=''):
         """
