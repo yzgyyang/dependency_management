@@ -3,6 +3,10 @@ from collections import Counter
 from sarge import run, Capture
 
 from dependency_management.Helper import is_executable_exists
+from dependency_management.requirements.AnyOneOfRequirements import (
+    AnyOneOfRequirements)
+from dependency_management.requirements.ExecutableRequirement import (
+    ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
 
@@ -30,6 +34,13 @@ class DistributionRequirement(PackageRequirement):
         'zypper': 'zypper',
     }
     _available_managers = None
+
+    REQUIREMENTS = {AnyOneOfRequirements(
+        list(
+            ExecutableRequirement(name)
+            for name in SUPPORTED_PACKAGE_MANAGERS.values()
+        ) + [ExecutableRequirement('grep')]
+    )}
 
     """
     List of commands that can be used to verify if the package is installed.
@@ -79,6 +90,16 @@ class DistributionRequirement(PackageRequirement):
         'libclang'
         >>> dr.packages['unknown3']
         'libclang'
+
+        >>> from pprint import pprint
+        >>> len(dr.REQUIREMENTS)
+        1
+        >>> dr_any_req = next(iter(dr.REQUIREMENTS))
+        >>> pprint(str(dr_any_req))
+        ('ExecutableRequirement(apt-get) ExecutableRequirement(dnf) '
+         'ExecutableRequirement(emerge) ExecutableRequirement(grep) '
+         'ExecutableRequirement(pacman) ExecutableRequirement(xbps-install) '
+         'ExecutableRequirement(yum) ExecutableRequirement(zypper)')
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string.  Unused.
