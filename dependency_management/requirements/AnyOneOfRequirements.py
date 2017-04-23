@@ -22,10 +22,11 @@ class AnyOneOfRequirements(PackageRequirement):
         'ExecutableRequirement(python) ExecutableRequirement(python3)'
         """
         self.requirements = requirements
-        self._packages_str = " ".join(["%s(%s)" %
+        self._packages_str = " ".join(sorted(
+                                      ["%s(%s)" %
                                        (requirement.__class__.__name__,
                                         str(requirement))
-                                       for requirement in self.requirements])
+                                       for requirement in self.requirements]))
         PackageRequirement.__init__(self, "any-one-of", self._packages_str)
 
     def is_installed(self):
