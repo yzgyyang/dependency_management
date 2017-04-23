@@ -1,4 +1,5 @@
 variables:
+  DEBIAN_FRONTEND: noninteractive
   DEBIAN_PACKAGE_MANAGERS: >
     cabal-install ghc
     cargo
@@ -6,6 +7,7 @@ variables:
     golang
     luarocks
     npm
+    python3-pip
     r-base
     ruby
     julia
@@ -19,29 +21,30 @@ cache:
     - ~/.cache/pip
     - vendor/
 
-before_script:
-  - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update -qq
-  - apt-get install -y -qq python3 python3-pip
+.common_script: &common_script
   - pip3 install --upgrade pip setuptools
   - pip3 install -r requirements.txt -r test-requirements.txt
+  - py.test --cov-fail-under=100
+  - codecov
 
 run_tests:
   image: ubuntu:rolling
-  script:
+  before_script:
+    - apt-get update -qq
     - apt-get install -y -qq software-properties-common
     - echo 'oracle-java7-installer shared/accepted-oracle-license-v1-1
             select true' | /usr/bin/debconf-set-selections
     - add-apt-repository -y ppa:webupd8team/java
     - apt-get update -qq
     - apt-get install -y $DEBIAN_PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
-    - py.test --cov-fail-under=100
-    - codecov
+  script: *common_script
 
 check_code:
   image: ubuntu:rolling
-  script:
-    - apt-get install -y -qq git
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq python3-pip git
     - pip3 install .
     - pip3 install --pre coala-bears
+  script:
     - coala-ci
