@@ -80,8 +80,8 @@ class PackageRequirement:
         Check if the requirement is satisfied.
 
         >>> PackageRequirement('pip', \
-                               'coala_decorators', \
-                               '0.2.1').is_installed()
+                               'numpy', \
+                               '1.12.1').is_installed()
         Traceback (most recent call last):
         ...
         NotImplementedError
