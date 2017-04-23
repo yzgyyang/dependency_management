@@ -38,8 +38,8 @@ class MavenRequirement(PackageRequirement):
         :param package: A string with the {groupId:artifactId} of
                         the package to be installed.
         :param version: A version string.
-        :param repo:    The repository from which the package to
-                        be installed is from.
+        :param repo:    The repository from which the package is to be
+                        installed.
         """
         package_regex = '([^: /]*:[^: /]*)'
         package_match = (re.compile(package_regex)).match(package)

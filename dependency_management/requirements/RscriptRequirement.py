@@ -44,8 +44,8 @@ class RscriptRequirement(PackageRequirement):
         :param version: A version string. Leave empty to specify latest version.
         :param flag:    A string that specifies any additional flags, that
                         are passed to the type.
-        :param repo:    The repository from which the package to be installed is
-                        from.
+        :param repo:    The repository from which the package is to be
+                        installed.
         """
         PackageRequirement.__init__(self, 'R', package, version, repo)
         self.flag = flag
