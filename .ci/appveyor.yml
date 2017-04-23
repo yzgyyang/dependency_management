@@ -96,7 +96,7 @@ build: false  # Not a C# project, build stuff at the test step instead.
 test_script:
   - "%CMD_IN_ENV% python setup.py install"
   - "%CMD_IN_ENV% py.test"
-  - "%CMD_IN_ENV% pip install coala-bears"
+  - "%CMD_IN_ENV% pip install --pre coala-bears"
   - "%CMD_IN_ENV% coala --ci"
 
 on_success:
