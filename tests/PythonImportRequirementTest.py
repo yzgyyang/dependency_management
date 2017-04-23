@@ -22,10 +22,10 @@ class PythonImportRequirementTestCase(unittest.TestCase):
 
     def test_import_success(self):
         c = PythonImportRequirement(
-            'colorit', '', ['colorit.color_front'])
+            'simplejson', '', ['simplejson.dumps'])
         c.install_package()
         self.assertTrue(c.is_importable())
-        self.assertTrue(hasattr(c, 'color_front'))
+        self.assertTrue(hasattr(c, 'dumps'))
 
         r = PythonImportRequirement('radon',
                                     '1.4.0',
