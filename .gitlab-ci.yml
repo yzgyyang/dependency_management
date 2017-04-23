@@ -1,4 +1,5 @@
 variables:
+  CONDA: http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
   DEBIAN_FRONTEND: noninteractive
   DEBIAN_PACKAGE_MANAGERS: >
     cabal-install ghc
@@ -14,9 +15,12 @@ variables:
     maven
   DEBIAN_OTHER_DEPS: >
     oracle-java7-installer
+    curl
   FEDORA_OTHER_DEPS: >
     lua-devel
     rubygem-rdoc
+    curl
+    bzip2
   # codecov depends on git, which is not default on openSUSE image
   # curl and unzip are needed by luarocks
   OPENSUSE_OTHER_DEPS: >
@@ -25,6 +29,7 @@ variables:
     java-1_7_0-openjdk
     lua-devel
     unzip
+    tar
 
 cache:
   paths:
@@ -34,6 +39,10 @@ cache:
 
 .common_script: &common_script
   - pip3 install --upgrade pip setuptools
+  - curl -fsSL -o miniconda.sh $CONDA
+  - chmod +x miniconda.sh
+  - ./miniconda.sh -b -p $HOME/miniconda
+  - export PATH=$PATH:$HOME/miniconda/bin
   - pip3 install -r requirements.txt -r test-requirements.txt
   - py.test --cov-fail-under=100
   - codecov
