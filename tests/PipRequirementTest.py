@@ -35,17 +35,21 @@ class PipRequirementTestCase(unittest.TestCase):
     def test_upgrade_requirement(self):
         p = PipRequirement('vanity', '1.2.5')
         p.install_package()
-        old_ver = get_both('pip show vanity')[0].split('\n')[1]
+        old_ver = get_both(
+            sys.executable + ' -m pip show vanity')[0].split('\n')[1]
         p.upgrade_package()
-        new_ver = get_both('pip show vanity')[0].split('\n')[1]
+        new_ver = get_both(
+            sys.executable + ' -m pip show vanity')[0].split('\n')[1]
         self.assertGreater(new_ver, old_ver)
 
     def test_upgrade_on_already_latest_version(self):
         p = PipRequirement('vanity')
         p.install_package()
-        old_ver = get_both('pip show vanity')[0].split('\n')[1]
+        old_ver = get_both(
+            sys.executable + ' -m pip show vanity')[0].split('\n')[1]
         p.upgrade_package()
-        new_ver = get_both('pip show vanity')[0].split('\n')[1]
+        new_ver = get_both(
+            sys.executable + ' -m pip show vanity')[0].split('\n')[1]
         self.assertEqual(new_ver, old_ver)
 
     def test_uninstall_requirement(self):
