@@ -23,6 +23,22 @@ class APTDistributionRequirementTestCase(unittest.TestCase):
             DistributionRequirement(apt_get='some_bad_package').is_installed())
 
 
+@unittest.skipIf(not is_executable_exists('brew'),
+                 'Brew is not available on this platform')
+class BrewDistributionRequirementTestCase(unittest.TestCase):
+
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(brew='python3')),
+                         'python3')
+
+    def test_installed_requirement(self):
+        self.assertTrue(DistributionRequirement(brew='python3').is_installed())
+
+    def test_not_installed_requirement(self):
+        self.assertFalse(
+            DistributionRequirement(brew='some_bad_package').is_installed())
+
+
 @unittest.skipIf(not is_executable_exists('dnf'),
                  'DNF is not available on this platform')
 class DNFDistributionRequirementTestCase(unittest.TestCase):

@@ -26,6 +26,7 @@ class DistributionRequirement(PackageRequirement):
     """
     SUPPORTED_PACKAGE_MANAGERS = {
         'apt_get': 'apt-get',
+        'brew': 'brew',
         'dnf': 'dnf',
         'pacman': 'pacman',
         'portage': 'emerge',
@@ -50,6 +51,7 @@ class DistributionRequirement(PackageRequirement):
     """
     CHECKER_COMMANDS = {
         'apt_get': 'dpkg-query -l {}',
+        'brew': 'brew list {}',
         'dnf': 'rpm -qa | grep "^{}"',
         'pacman': 'pacman -Qs {}',
         'portage': 'equery list {}',
@@ -62,6 +64,7 @@ class DistributionRequirement(PackageRequirement):
     """
     _INSTALL_COMMANDS = {
         'apt_get': ('apt-get', 'install', '--yes'),
+        'brew': ('brew', 'install'),
         'dnf': ('dnf', 'install', '--assumeyes'),
         'pacman': ('pacman', ),
         'portage': ('emerge', ),
