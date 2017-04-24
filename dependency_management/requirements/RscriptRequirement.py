@@ -57,13 +57,13 @@ class RscriptRequirement(PackageRequirement):
         >>> RscriptRequirement(
         ...     'formatR', '' , '-e',
         ...     'http://cran.rstudio.com').install_command()
-        'R -e "install.packages(\"formatR\", repo=\"http://cran.rstudio.com\", dependencies=TRUE)"'
+        ['R', '-e', '"install.packages("formatR", repo="http://cran.rstudio.com", dependencies=TRUE)"']
 
-        :param return: A string with the installation command.
+        :param return: A list with the installation command.
         """
-        return ('R {} "install.packages(\"{}\", repo=\"{}\", '
-                'dependencies=TRUE)"'.format(self.flag,
-                                             self.package, self.repo))
+        install = '"install.packages(\"{}\", repo=\"{}\", dependencies=TRUE)"'
+        result = ['R', '-e', install.format(self.package, self.repo)]
+        return result
 
     def is_installed(self):
         """
