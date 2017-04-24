@@ -30,6 +30,7 @@ cache:
   - "%LOCALAPPDATA%\\Composer"
   - "C:\\tools\\julia"
   - "C:\\tools\\rust"
+  - "C:\\tools\\rscript"
 
 branches:
   except:
@@ -90,6 +91,15 @@ install:
   - ps: If ((Test-Path c:\tools\rust\bin\rustc.exe) -eq $False) {
         C:\tools\rust-binary.exe /VERYSILENT /NORESTART /DIR=C:\tools\rust }
   - SET PATH=C:\tools\rust\bin;%PATH%
+  # Preparing Rscript
+  - ps: If ((Test-Path c:\tools\rscript) -eq $False) {
+        (new-object net.webclient).DownloadFile(
+        $("https://cran.r-project.org/bin/windows/"+
+        "base/R-3.4.0-win.exe"), "C:\tools\rscript-binary.exe") }
+  - ps: If ((Test-Path c:\tools\rscript\bin\R.exe) -eq $False) {
+        C:\tools\rscript-binary.exe /VERYSILENT /NORESTART
+        /DIR=C:\tools\rscript }
+  - SET PATH=C:\tools\rscript\bin;%PATH%
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
