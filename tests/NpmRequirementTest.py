@@ -1,7 +1,9 @@
+import shutil
 import unittest
 import unittest.mock
+
 import sarge
-import shutil
+
 from dependency_management.requirements.NpmRequirement import NpmRequirement
 
 

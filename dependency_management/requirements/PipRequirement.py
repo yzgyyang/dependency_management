@@ -1,10 +1,11 @@
+import sys
+
+from sarge import run, Capture
+
 from dependency_management.requirements.ExecutableRequirement import (
     ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-
-from sarge import run, Capture
-import sys
 
 
 class PipRequirement(PackageRequirement):

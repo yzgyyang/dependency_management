@@ -1,14 +1,12 @@
 import shlex
 
+from coala_utils.string_processing import escape
+from sarge import run, Capture
+
 from dependency_management.requirements.ExecutableRequirement import (
     ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
-
-from sarge import Capture
-from sarge import run
-
-from coala_utils.string_processing import escape
 
 
 class JuliaRequirement(PackageRequirement):

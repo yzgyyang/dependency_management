@@ -1,5 +1,6 @@
-import unittest
 import shutil
+import unittest
+
 from dependency_management.requirements.GoRequirement import GoRequirement
 
 

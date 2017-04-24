@@ -1,8 +1,9 @@
-import unittest
 import sys
+import unittest
+
+from sarge import get_both
 
 from dependency_management.requirements.PipRequirement import PipRequirement
-from sarge import get_both
 
 
 class PipRequirementTestCase(unittest.TestCase):

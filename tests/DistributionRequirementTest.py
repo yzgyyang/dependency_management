@@ -1,5 +1,5 @@
-import unittest
 import shutil
+import unittest
 
 from dependency_management.Helper import is_executable_exists
 from dependency_management.requirements.DistributionRequirement import (

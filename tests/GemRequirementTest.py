@@ -2,8 +2,10 @@ import os
 import shutil
 import unittest
 
-from dependency_management.requirements.GemRequirement import GemRequirement
 from sarge import run, Capture
+
+from dependency_management.requirements.GemRequirement import GemRequirement
+
 
 GEM_INSTALLED_PACKAGE = os.environ.get(
     'GEM_INSTALLED_PACKAGE', 'rdoc')
