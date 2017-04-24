@@ -22,6 +22,19 @@ class APTDistributionRequirementTestCase(unittest.TestCase):
         self.assertFalse(
             DistributionRequirement(apt_get='some_bad_package').is_installed())
 
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', apt_get='apt')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000',
+                                                 apt_get='apt').is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 apt_get='some_bad_package')
+                         .is_installed())
+
 
 @unittest.skipIf(not is_executable_exists('brew'),
                  'Brew is not available on this platform')
@@ -38,6 +51,19 @@ class BrewDistributionRequirementTestCase(unittest.TestCase):
         self.assertFalse(
             DistributionRequirement(brew='some_bad_package').is_installed())
 
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', brew='python3')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000',
+                                                 brew='python3').is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 brew='some_bad_package')
+                         .is_installed())
+
 
 @unittest.skipIf(not is_executable_exists('dnf'),
                  'DNF is not available on this platform')
@@ -52,6 +78,19 @@ class DNFDistributionRequirementTestCase(unittest.TestCase):
     def test_not_installed_requirement(self):
         self.assertFalse(
             DistributionRequirement(dnf='some_bad_package').is_installed())
+
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', dnf='dnf')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000', dnf='dnf')
+                         .is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 dnf='some_bad_package')
+                         .is_installed())
 
 
 @unittest.skipIf(not is_executable_exists('pacman'),
@@ -70,6 +109,20 @@ class PacmanDistributionRequirementTestCase(unittest.TestCase):
         self.assertFalse(
             DistributionRequirement(pacman='some_bad_package').is_installed())
 
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', pacman='pacman')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000',
+                                                 pacman='pacman')
+                         .is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 pacman='some_bad_package')
+                         .is_installed())
+
 
 @unittest.skipIf(not is_executable_exists('emerge'),
                  'Portage is not available on this platform')
@@ -87,6 +140,20 @@ class PortageDistributionRequirementTestCase(unittest.TestCase):
         self.assertFalse(
             DistributionRequirement(portage='some_bad_package').is_installed())
 
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', portage='portage')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000',
+                                                 portage='portage')
+                         .is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 portage='some_bad_package')
+                         .is_installed())
+
 
 @unittest.skipIf(not is_executable_exists('xbps-install'),
                  'XBPS is not available on this platform')
@@ -101,6 +168,19 @@ class XBPSDistributionRequirementTestCase(unittest.TestCase):
     def test_not_installed_requirement(self):
         self.assertFalse(
             DistributionRequirement(xbps='some_bad_package').is_installed())
+
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', xbps='xbps')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000', xbps='xbps')
+                         .is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 xbps='some_bad_package')
+                         .is_installed())
 
 
 @unittest.skipIf(not is_executable_exists('yum'),
@@ -118,6 +198,21 @@ class YUMDistributionRequirementTestCase(unittest.TestCase):
         self.assertFalse(
             DistributionRequirement(yum='some_bad_package').is_installed())
 
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', yum='yum')
+                        .is_installed() or
+                        DistributionRequirement(version='0', yum='dnf-yum')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000', yum='yum')
+                         .is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 yum='some_bad_package')
+                         .is_installed())
+
 
 @unittest.skipIf(not is_executable_exists('zypper'),
                  'Zypper is not available on this platform')
@@ -134,6 +229,20 @@ class ZypperDistributionRequirementTestCase(unittest.TestCase):
     def test_not_installed_requirement(self):
         self.assertFalse(
             DistributionRequirement(zypper='some_bad_package').is_installed())
+
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', zypper='zypper')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000',
+                                                 zypper='zypper')
+                         .is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 zypper='some_bad_package')
+                         .is_installed())
 
 
 class DistributionDiffstatRequirementTestCase(unittest.TestCase):

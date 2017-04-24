@@ -1,4 +1,6 @@
 from collections import Counter
+from distutils.version import LooseVersion
+import re
 
 from sarge import run, Capture
 
@@ -73,6 +75,29 @@ class DistributionRequirement(PackageRequirement):
         'zypper': ('zypper', '--non-interactive', 'install'),
     }
 
+    """
+    List of commands that can be used to get the version installed
+    """
+    VERSION_COMMANDS = {
+        'apt_get': "dpkg-query --showformat '${{Version}}' --show {}",
+        'brew': 'brew list --versions {}',
+        'dnf': 'rpm -q --qf "%{{VERSION}}" {}',
+        'pacman': 'pacman -Qiq {}',
+        'portage': "equery -q list --format='$version' {}",
+        'xbps': 'xbps-query {}',
+        'yum': 'rpm -q --qf "%{{VERSION}}" {}',
+        'zypper': 'rpm -q --qf "%{{VERSION}}" {}'
+    }
+
+    """
+    List of regex patterns to used with VERSION_COMMANDS to extract the version
+    """
+    VERSION_EXTRACTION_REGEX = {
+        'brew': re.compile(r'\s([^\s]+)$'),
+        'pacman': re.compile(r'^Version\s+:\s(.+)', re.M),
+        'xbps': re.compile(r'^pkgver:\s.+-(.*)', re.M)
+    }
+
     def __init__(self, package: str=None, version='', repo='',
                  **package_overrides):
         """
@@ -121,7 +146,7 @@ class DistributionRequirement(PackageRequirement):
          'ExecutableRequirement(yum) ExecutableRequirement(zypper)')
 
         :param package: A string with the name of the package to be installed.
-        :param version: A version string.  Unused.
+        :param version: A version string.
         :param repo:    The repository from which the package is to be
                         installed.  Unused.
         :param kwargs: Override package names for supported package managers.
@@ -239,6 +264,30 @@ class DistributionRequirement(PackageRequirement):
             'manager(s): {}'
             .format(', '.join(self.SUPPORTED_PACKAGE_MANAGERS)))
 
+    def get_installed_version(self):
+        """
+        Return the version if the package is installed, an empty string
+        otherwise.
+        """
+        package_manager = self.get_available_package_manager()
+        package = self.packages[package_manager]
+
+        results = run(self.VERSION_COMMANDS[package_manager].format(package),
+                      stdout=Capture(), stderr=Capture())
+
+        if results.returncode:
+            return ''
+
+        output = results.stdout.text
+
+        if package_manager in self.VERSION_EXTRACTION_REGEX:  # pragma: no cover
+            pattern = self.VERSION_EXTRACTION_REGEX[package_manager]
+            res = pattern.match(version)
+            if res:
+                output = res.group(1)
+
+        return output.rstrip()
+
     def is_installed(self):
         """
         Check if the requirement is satisfied by calling various package
@@ -253,6 +302,14 @@ class DistributionRequirement(PackageRequirement):
         package_manager = self.get_available_package_manager()
         command = self.CHECKER_COMMANDS[package_manager]
         package = self.packages[package_manager]
+        version = self.version
+
+        if version:
+            installed_version = self.get_installed_version()
+            if installed_version:
+                return LooseVersion(installed_version) >= LooseVersion(version)
+            else:
+                return False
         return not run(command.format(package),
                        stdout=Capture(), stderr=Capture()).returncode
 
