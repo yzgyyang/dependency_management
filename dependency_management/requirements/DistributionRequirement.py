@@ -35,12 +35,15 @@ class DistributionRequirement(PackageRequirement):
     }
     _available_managers = None
 
-    REQUIREMENTS = {AnyOneOfRequirements(
-        list(
-            ExecutableRequirement(name)
-            for name in SUPPORTED_PACKAGE_MANAGERS.values()
-        ) + [ExecutableRequirement('grep')]
-    )}
+    REQUIREMENTS = {
+        AnyOneOfRequirements(
+            list(
+                ExecutableRequirement(name)
+                for name in SUPPORTED_PACKAGE_MANAGERS.values()
+            )
+        ),
+        ExecutableRequirement('grep'),
+    }
 
     """
     List of commands that can be used to verify if the package is installed.
@@ -105,11 +108,12 @@ class DistributionRequirement(PackageRequirement):
 
         >>> from pprint import pprint
         >>> len(dr.REQUIREMENTS)
-        1
-        >>> dr_any_req = next(iter(dr.REQUIREMENTS))
-        >>> pprint(str(dr_any_req))
-        ('ExecutableRequirement(apt-get) ExecutableRequirement(dnf) '
-         'ExecutableRequirement(emerge) ExecutableRequirement(grep) '
+        2
+        >>> not_grep_req = [dep for dep in dr.REQUIREMENTS
+        ...                 if str(dep) != 'grep'][0]
+        >>> pprint(str(not_grep_req))
+        ('ExecutableRequirement(apt-get) ExecutableRequirement(brew) '
+         'ExecutableRequirement(dnf) ExecutableRequirement(emerge) '
          'ExecutableRequirement(pacman) ExecutableRequirement(xbps-install) '
          'ExecutableRequirement(yum) ExecutableRequirement(zypper)')
 
