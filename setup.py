@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 from setuptools import find_packages, setup
+
+from dependency_management import __version__
+
+
 with open('requirements.txt') as requirements:
     required = requirements.read().splitlines()
 with open('test-requirements.txt') as requirements:
     test_required = requirements.read().splitlines()
 with open("README.md") as readme:
     long_description = readme.read()
+
 if __name__ == "__main__":
     setup(name='dependency_management',
-          version='0.3.1',
+          version=__version__,
           description='coala Dependency Management',
           author="Adrian Zatreanu",
           maintainer="Adrian Zatreanu",
