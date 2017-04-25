@@ -67,9 +67,10 @@ class PythonImportRequirementTestCase(unittest.TestCase):
         self.assertFalse(hasattr(rad, 'bad_module'))
 
     def test_import_module_success(self):
-        s = PythonImportRequirement('setuptools', '', ['setuptools.setup'])
+        s = PythonImportRequirement('colorit', '', ['colorit.bold'])
+        s.install_package()
         s._create_import_attributes()
-        self.assertTrue(hasattr(s, 'setup'))
+        self.assertTrue(hasattr(s, 'bold'))
 
     def test_import_module_raises(self):
         y = PythonImportRequirement('pyyaml', '', ['yaml.bad_mod'])
