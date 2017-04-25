@@ -103,3 +103,16 @@ class PackageRequirement(Dependant):
         :raises NotImplementedError: Method is not implemented
         """
         raise NotImplementedError
+
+    def get_installed_version(self):
+        """
+        Returns a string with the installed verion of the package.
+
+        >>> PackageRequirement('pip', 'pip').get_installed_version()
+        Traceback (most recent call last):
+        ...
+        NotImplementedError
+
+        :raises NotImplementedError: Method is not implemented
+        """
+        raise NotImplementedError

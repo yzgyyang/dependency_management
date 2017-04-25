@@ -1,6 +1,6 @@
 import sys
 
-from sarge import run, Capture
+from sarge import run, Capture, get_stdout
 
 from dependency_management.requirements.ExecutableRequirement import (
     ExecutableRequirement)
@@ -74,3 +74,17 @@ class PipRequirement(PackageRequirement):
             stdout=Capture(),
             stderr=Capture())
         self.is_installed.cache_clear()
+
+    def get_installed_version(self):
+        """
+        Checks the installed version of the pip package.
+
+        :return:
+            A string with version of dependency if version is
+            installed else None.
+        """
+        show_command = [sys.executable, '-m', 'pip', 'show', self.package]
+        pkg_detail = get_stdout(' '.join(show_command))
+        if pkg_detail:
+            return pkg_detail.splitlines()[1].split()[1]
+        return None

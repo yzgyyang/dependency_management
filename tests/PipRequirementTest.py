@@ -59,3 +59,12 @@ class PipRequirementTestCase(unittest.TestCase):
         self.assertTrue(p.is_installed())
         p.uninstall_package()
         self.assertFalse(p.is_installed())
+
+    def test_installed_version(self):
+        p = PipRequirement('vanity', '1.2.5')
+        p.install_package()
+        self.assertEqual(p.get_installed_version(), '1.2.5')
+        p.uninstall_package()
+
+    def test_not_installed_version(self):
+        self.assertIsNone(PipRequirement('bad_package').get_installed_version())
