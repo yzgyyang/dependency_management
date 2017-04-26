@@ -1,4 +1,8 @@
 variables:
+  CI_BUILD_REF_NAME: $CI_COMMIT_REF_NAME
+  CI_BUILD_ID: $CI_JOB_ID
+  CI_BUILD_REPO: $CI_REPOSITORY_URL
+  CI_BUILD_REF: $CI_COMMIT_SHA
   CONDA: http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
   DEBIAN_FRONTEND: noninteractive
   DEBIAN_PACKAGE_MANAGERS: >
