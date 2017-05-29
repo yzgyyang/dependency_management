@@ -18,7 +18,7 @@ variables:
     julia
     maven
   DEBIAN_OTHER_DEPS: >
-    oracle-java7-installer
+    oracle-java8-installer
     curl
   FEDORA_OTHER_DEPS: >
     lua-devel
@@ -30,7 +30,7 @@ variables:
   OPENSUSE_OTHER_DEPS: >
     curl
     git
-    java-1_7_0-openjdk
+    java-1_8_0-openjdk
     lua-devel
     unzip
     tar
@@ -56,7 +56,7 @@ test:ubuntu_rolling:
   before_script:
     - apt-get update -qq
     - apt-get install -y -qq software-properties-common
-    - echo 'oracle-java7-installer shared/accepted-oracle-license-v1-1
+    - echo 'oracle-java8-installer shared/accepted-oracle-license-v1-1
             select true' | /usr/bin/debconf-set-selections
     - add-apt-repository -y ppa:webupd8team/java
     - apt-get update -qq
