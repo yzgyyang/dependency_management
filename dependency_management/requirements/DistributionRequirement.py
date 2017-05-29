@@ -93,9 +93,9 @@ class DistributionRequirement(PackageRequirement):
     List of regex patterns to used with VERSION_COMMANDS to extract the version
     """
     VERSION_EXTRACTION_REGEX = {
-        'brew': re.compile(r'\s([^\s]+)$'),
-        'pacman': re.compile(r'^Version\s+:\s(.+)', re.M),
-        'xbps': re.compile(r'^pkgver:\s.+-(.*)', re.M)
+        'brew': r'\s(?P<version>[^\s]+)$',
+        'pacman': r'Version\s+:\s(?P<version>.+)',
+        'xbps': r'pkgver:\s.+-(?P<version>.*)'
     }
 
     def __init__(self, package: str=None, version='', repo='',
@@ -281,10 +281,10 @@ class DistributionRequirement(PackageRequirement):
         output = results.stdout.text
 
         if package_manager in self.VERSION_EXTRACTION_REGEX:  # pragma: no cover
-            pattern = self.VERSION_EXTRACTION_REGEX[package_manager]
-            res = pattern.match(version)
+            regex = self.VERSION_EXTRACTION_REGEX[package_manager]
+            res = re.search(regex, output)
             if res:
-                output = res.group(1)
+                output = res.group('version')
 
         return output.rstrip()
 
