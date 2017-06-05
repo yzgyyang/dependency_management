@@ -1,4 +1,6 @@
 coverage~=4.3.4
+coverage-env-plugin~=0.1
+coverage-config-reload-plugin~=0.1
 codecov~=2.0.5
 pytest~=3.0
 pytest-cov==2.2.1
