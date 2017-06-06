@@ -95,16 +95,19 @@ test:opensuse_leap:
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R-base}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/golang/go}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/composer/php-composer}
+    # cargo installed separately below
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/cargo/}
     # Installing Java 7 for checkstyle 6.19 is problematic
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/maven/}
     - rm dependency_management/requirements/MavenRequirement.py
          tests/MavenRequirementTest.py
     # luarocks
     - zypper addrepo $REPOS_BASE/$LUAROCKS_REPO/$RELEASE/$LUAROCKS_REPO.repo
-    # cargo
-    - zypper addrepo $REPOS_BASE/$CARGO_REPO/$RELEASE/$CARGO_REPO.repo
     - zypper --no-gpg-checks --non-interactive install
              $PACKAGE_MANAGERS $OPENSUSE_OTHER_DEPS
+    # cargo
+    - zypper addrepo $REPOS_BASE/$CARGO_REPO/$RELEASE/$CARGO_REPO.repo
+    - zypper --no-gpg-checks --non-interactive install cargo
     # go list requires /usr/lib64/go/src/runtime/internal/sys/zversion.go
     - mkdir -p /usr/lib64/go/src/runtime/internal/sys/
     - touch /usr/lib64/go/src/runtime/internal/sys/zversion.go
