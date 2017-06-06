@@ -3,6 +3,7 @@ variables:
   CI_BUILD_ID: $CI_JOB_ID
   CI_BUILD_REPO: $CI_REPOSITORY_URL
   CI_BUILD_REF: $CI_COMMIT_SHA
+  PYTHON: python3
   CONDA: http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
   DEBIAN_FRONTEND: noninteractive
   DEBIAN_PACKAGE_MANAGERS: >
@@ -47,12 +48,14 @@ cache:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b -p $HOME/miniconda
   - export PATH=$PATH:$HOME/miniconda/bin
-  - pip3 install -r requirements.txt -r test-requirements.txt
-  - py.test --cov-fail-under=100
+  - $PYTHON -m pip install -r requirements.txt -r test-requirements.txt
+  - $PYTHON -m pytest --cov-fail-under=100
   - codecov
 
 test:ubuntu_rolling:
   image: ubuntu:rolling
+  variables:
+    PYTHON: python3.6
   before_script:
     - apt-get update -qq
     - apt-get install -y -qq software-properties-common
@@ -66,6 +69,7 @@ test:ubuntu_rolling:
 test:fedora_25:
   image: fedora:25
   variables:
+    PYTHON: python3.5
     PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS
   before_script:
     - echo 'install_weak_deps=False' >> /etc/dnf/dnf.conf
@@ -80,6 +84,7 @@ test:fedora_25:
 test:opensuse_leap:
   image: opensuse:leap
   variables:
+    PYTHON: python3.4
     PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS
     REPOS_BASE: http://download.opensuse.org/repositories
     RELEASE: openSUSE_Leap_42.2
