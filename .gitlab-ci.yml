@@ -111,8 +111,6 @@ check_code:
     - apt-get update -qq
     - apt-get install -y -qq python3-pip git
     - pip3 install .
-    - pip3 install --pre coala-bears
-    - pip3 uninstall --yes vim-vint
-    - pip3 install chardet==3.0.3
+    - pip3 install coala-bears
   script:
     - coala-ci
