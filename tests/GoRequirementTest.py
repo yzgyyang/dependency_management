@@ -15,3 +15,11 @@ class GoRequirementTestCase(unittest.TestCase):
 
     def test_not_installed_requirement(self):
         self.assertFalse(GoRequirement('some_bad_package').is_installed())
+
+    def test_not_implemented_error(self):
+        """
+        Test the 'NotImplementedError' raised if version provided
+        """
+        with self.assertRaisesRegex(NotImplementedError,
+                                    r'^Setting version '):
+            GoRequirement('github.com/golang/lint/golint', '19.2', '-u')

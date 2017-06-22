@@ -13,7 +13,6 @@ class JuliaRequirementTestCase(unittest.TestCase):
 
     def test__str__(self):
         self.assertEqual(str(JuliaRequirement('Lint')), 'Lint')
-        self.assertEqual(str(JuliaRequirement('Lint', '0.5')), 'Lint 0.5')
 
     def test_installed_requirement(self):
         with unittest.mock.patch('dependency_management.requirements.' +
@@ -31,3 +30,11 @@ class JuliaRequirementTestCase(unittest.TestCase):
         # FIXME Make this test more reliable, because `ACME` can be an
         # FIXME installed package.
         self.assertFalse(JuliaRequirement("ACME").is_installed())
+
+    def test_not_implemented_error(self):
+        """
+        Test the 'NotImplementedError' raised if version provided
+        """
+        with self.assertRaisesRegex(NotImplementedError,
+                                    r'^Setting version '):
+            JuliaRequirement('Lint', '0.5')

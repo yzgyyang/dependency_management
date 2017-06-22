@@ -20,13 +20,13 @@ class GoRequirement(PackageRequirement):
         Constructs a new ``GoRequirement``, using the ``PackageRequirement``
         constructor.
 
-        >>> pr = GoRequirement('github.com/golang/lint/golint', '19.2', '-u')
+        >>> pr = GoRequirement('github.com/golang/lint/golint', '', '-u')
         >>> pr.type
         'go'
         >>> pr.package
         'github.com/golang/lint/golint'
         >>> pr.version
-        '19.2'
+        ''
         >>> pr.flag
         '-u'
 
@@ -35,6 +35,9 @@ class GoRequirement(PackageRequirement):
         :param flag:    A string that specifies any additional flags, that
                         are passed to the manager.
         """
+        if version:
+            raise NotImplementedError(
+                'Setting version is not implemented by GoRequirement')
         PackageRequirement.__init__(self, 'go', package, version)
         self.flag = flag
 

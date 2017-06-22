@@ -23,19 +23,22 @@ class JuliaRequirement(PackageRequirement):
         Constructs a new ``JuliaRequirement``, using the ``PackageRequirement``
         constructor.
 
-        >>> pr = JuliaRequirement('Lint', '19.2')
+        >>> pr = JuliaRequirement('Lint')
         >>> pr.type
         'julia'
         >>> pr.package
         'Lint'
         >>> pr.version
-        '19.2'
+        ''
         >>> str(pr)
-        'Lint 19.2'
+        'Lint'
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string. Leave empty to specify latest version.
         """
+        if version:
+            raise NotImplementedError(
+                'Setting version is not implemented by JuliaRequirement')
         PackageRequirement.__init__(self, 'julia', package, version)
 
     def install_command(self):

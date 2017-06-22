@@ -25,16 +25,16 @@ class RscriptRequirement(PackageRequirement):
         ``PackageRequirement`` constructor.
 
         >>> pr = RscriptRequirement(
-        ...         'formatR', version='1.4', flag='-e',
+        ...         'formatR', version='', flag='-e',
         ...         repo="http://cran.rstudio.com")
         >>> pr.type
         'R'
         >>> pr.package
         'formatR'
         >>> pr.version
-        '1.4'
+        ''
         >>> str(pr)
-        'formatR 1.4'
+        'formatR'
         >>> pr.flag
         '-e'
         >>> pr.repo
@@ -47,6 +47,9 @@ class RscriptRequirement(PackageRequirement):
         :param repo:    The repository from which the package is to be
                         installed.
         """
+        if version:
+            raise NotImplementedError(
+                'Setting version is not implemented by JuliaRequirement')
         PackageRequirement.__init__(self, 'R', package, version, repo)
         self.flag = flag
 

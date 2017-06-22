@@ -10,10 +10,17 @@ class RscriptRequirementTestCase(unittest.TestCase):
 
     def test__str__(self):
         self.assertEqual(str(RscriptRequirement('base')), 'base')
-        self.assertEqual(str(RscriptRequirement('base', '3.5')), 'base 3.5')
 
     def test_installed_requirement(self):
         self.assertTrue(RscriptRequirement('base').is_installed())
 
     def test_not_installed_requirement(self):
         self.assertFalse(RscriptRequirement('some_bad_package').is_installed())
+
+    def test_not_implemented_error(self):
+        """
+        Test the 'NotImplementedError' raised if version provided
+        """
+        with self.assertRaisesRegex(NotImplementedError,
+                                    r'^Setting version '):
+            RscriptRequirement('base', '3.5')
