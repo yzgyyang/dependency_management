@@ -1,3 +1,4 @@
+import warnings
 from dependency_management.requirements.PackageRequirement import (
     PackageRequirement)
 
@@ -36,6 +37,10 @@ class AnyOneOfRequirements(PackageRequirement):
         :return: True if any of the requirements are satisfied, false otherwise
         """
         for requirement in self.requirements:
-            if requirement.is_installed():
-                return True
+            try:
+                if requirement.is_installed():
+                    return True
+            except Exception as e:
+                message = 'Exception of type {0} occurred : {1!r}\n'
+                warnings.warn(message.format(type(e).__name__, e.args))
         return False
