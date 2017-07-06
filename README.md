@@ -29,5 +29,6 @@ Supported package managers:
 - [luarocks](https://luarocks.org/) - Lua
 - [Apache Maven](https://maven.apache.org/) - Java
 - [npm](http://npmjs.com/) - JavaScript
+- [bower](https://bower.io/) - JavaScript
 - [pip](https://pip.pypa.io/) - Python
 - [Rscript](https://www.r-project.org/) - R
