@@ -1,10 +1,12 @@
 from coala_utils.decorators import generate_eq, generate_repr
 from sarge import run, Capture
 
+from dependency_management.Dependant import Dependant
+
 
 @generate_eq("type", "package", "version", "repo")
 @generate_repr()
-class PackageRequirement:
+class PackageRequirement(Dependant):
     """
     This class helps keeping track of bear requirements. It should simply
     be appended to the REQUIREMENTS tuple inside the Bear class.
@@ -40,6 +42,8 @@ class PackageRequirement:
         :param repo:    The repository from which the package is to be
                         installed.
         """
+        super().__init__()
+
         self.type = type
         self.package = package
         self.version = version
