@@ -1,3 +1,5 @@
+import functools
+
 from coala_utils.decorators import generate_eq, generate_repr
 from sarge import run, Capture
 
@@ -49,6 +51,9 @@ class PackageRequirement(Dependant):
         self.version = version
         self.repo = repo
 
+        self.is_installed = functools.lru_cache()(
+            self.is_installed)
+
     def __str__(self):
         """
         Just return package name, followed by version if given.
@@ -66,6 +71,7 @@ class PackageRequirement(Dependant):
         """
         p = run(" ".join(self.install_command()), stdout=Capture(),
                 stderr=Capture())
+        self.is_installed.cache_clear()
         return p.returncode
 
     def install_command(self):

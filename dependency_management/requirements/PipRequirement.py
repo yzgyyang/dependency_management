@@ -73,3 +73,4 @@ class PipRequirement(PackageRequirement):
         run(sys.executable + ' -m pip uninstall -y ' + self.package,
             stdout=Capture(),
             stderr=Capture())
+        self.is_installed.cache_clear()
