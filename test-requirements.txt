@@ -3,7 +3,7 @@ coverage-env-plugin~=0.1
 coverage-config-reload-plugin~=0.1
 codecov~=2.0.5
 pytest~=3.0
-pytest-cov==2.2.1
+pytest-cov~=2.2
 pytest-spec~=1.1
 pytest-timeout~=1.0
 pip>=9.0.0
