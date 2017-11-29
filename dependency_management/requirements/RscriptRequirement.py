@@ -25,7 +25,7 @@ class RscriptRequirement(PackageRequirement):
         ``PackageRequirement`` constructor.
 
         >>> pr = RscriptRequirement(
-        ...         'formatR', version='', flag='-e',
+        ...         'formatR', version='',
         ...         repo="http://cran.rstudio.com")
         >>> pr.type
         'R'
@@ -35,15 +35,13 @@ class RscriptRequirement(PackageRequirement):
         ''
         >>> str(pr)
         'formatR'
-        >>> pr.flag
-        '-e'
         >>> pr.repo
         'http://cran.rstudio.com'
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string. Leave empty to specify latest version.
         :param flag:    A string that specifies any additional flags, that
-                        are passed to the type.
+                        are passed to the type (WARNING: Deprecated).
         :param repo:    The repository from which the package is to be
                         installed.
         """
