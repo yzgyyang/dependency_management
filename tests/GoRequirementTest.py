@@ -22,4 +22,4 @@ class GoRequirementTestCase(unittest.TestCase):
         """
         with self.assertRaisesRegex(NotImplementedError,
                                     r'^Setting version '):
-            GoRequirement('github.com/golang/lint/golint', '19.2', '-u')
+            GoRequirement('github.com/golang/lint/golint', '19.2')

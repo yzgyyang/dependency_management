@@ -20,26 +20,24 @@ class GoRequirement(PackageRequirement):
         Constructs a new ``GoRequirement``, using the ``PackageRequirement``
         constructor.
 
-        >>> pr = GoRequirement('github.com/golang/lint/golint', '', '-u')
+        >>> pr = GoRequirement('github.com/golang/lint/golint', '')
         >>> pr.type
         'go'
         >>> pr.package
         'github.com/golang/lint/golint'
         >>> pr.version
         ''
-        >>> pr.flag
-        '-u'
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string. Leave empty to specify latest version.
         :param flag:    A string that specifies any additional flags, that
-                        are passed to the manager.
+                        are passed to the manager. (WARNING: deprecated)
+
         """
         if version:
             raise NotImplementedError(
                 'Setting version is not implemented by GoRequirement')
         PackageRequirement.__init__(self, 'go', package, version)
-        self.flag = flag
 
     def install_command(self):
         """
@@ -51,7 +49,7 @@ class GoRequirement(PackageRequirement):
 
         :param return: A string with the installation command.
         """
-        return ['go', 'get', self.flag, self.package]
+        return ['go', 'get', '-u', self.package]
 
     def is_installed(self):
         """
