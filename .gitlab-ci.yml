@@ -96,7 +96,7 @@ test:opensuse_leap:
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R-base}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/golang/go}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/composer/php-composer}
-    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/luarocks/lua52-luarocks}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/luarocks/lua53-luarocks}
     # cargo installed separately below
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/cargo/}
     # Installing Java 7 for checkstyle 6.19 is problematic
