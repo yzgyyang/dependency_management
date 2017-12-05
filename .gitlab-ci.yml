@@ -48,6 +48,8 @@ cache:
   - pip3 install --upgrade pip setuptools
   - npm install -g bower
   - curl -fsSL -o miniconda.sh $CONDA
+  - curl -sSL https://get.haskellstack.org/ | sh
+  - stack setup
   - chmod +x miniconda.sh
   - ./miniconda.sh -b -p $HOME/miniconda
   - export PATH=$PATH:$HOME/miniconda/bin
