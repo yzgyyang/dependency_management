@@ -10,7 +10,9 @@ It is tested on Linux, macOS and Windows.
 
 Supported package managers:
 
-- [cabal](https://www.haskell.org/cabal/) - Haskell
+- Haskell
+  - [stack](http://haskellstack.org)
+  - [cabal](https://www.haskell.org/cabal/)
 - [cargo](https://crates.io/) - Rust
 - [composer](https://getcomposer.org/) - Php
 - [conda](https://conda.io/) - any software stack
