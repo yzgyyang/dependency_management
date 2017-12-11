@@ -21,11 +21,13 @@ variables:
   DEBIAN_OTHER_DEPS: >
     oracle-java8-installer
     curl
+    perl-doc
   FEDORA_OTHER_DEPS: >
     lua-devel
     rubygem-rdoc
     curl
     bzip2
+    perl-core
   # codecov depends on git, which is not default on openSUSE image
   # curl and unzip are needed by luarocks
   OPENSUSE_OTHER_DEPS: >
@@ -53,6 +55,7 @@ cache:
   - go get -u github.com/gpmgo/gopm
   - go install github.com/gpmgo/gopm
   - mv $GOPATH/bin/gopm /usr/bin
+  - cpan App::cpanminus
   - $PYTHON -m pip install -r requirements.txt -r test-requirements.txt
   - $PYTHON -m pytest --cov-fail-under=100
   - codecov
