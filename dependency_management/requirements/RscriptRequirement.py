@@ -47,7 +47,7 @@ class RscriptRequirement(PackageRequirement):
         """
         if version:
             raise NotImplementedError(
-                'Setting version is not implemented by JuliaRequirement')
+                'Setting version is not implemented by RscriptRequirement')
         PackageRequirement.__init__(self, 'R', package, version, repo)
         self.flag = flag
 
