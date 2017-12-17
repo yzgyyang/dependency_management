@@ -22,12 +22,14 @@ variables:
     oracle-java8-installer
     curl
     perl-doc
+    php-pear
   FEDORA_OTHER_DEPS: >
     lua-devel
     rubygem-rdoc
     curl
     bzip2
     perl-core
+    php-pear
   # codecov depends on git, which is not default on openSUSE image
   # curl and unzip are needed by luarocks
   OPENSUSE_OTHER_DEPS: >
@@ -37,6 +39,7 @@ variables:
     lua-devel
     unzip
     tar
+    php5-pear
 
 cache:
   paths:
