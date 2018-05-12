@@ -8,7 +8,7 @@ with open('requirements.txt') as requirements:
     required = requirements.read().splitlines()
 with open('test-requirements.txt') as requirements:
     test_required = requirements.read().splitlines()
-with open("README.md") as readme:
+with open('README.rst') as readme:
     long_description = readme.read()
 
 if __name__ == "__main__":
