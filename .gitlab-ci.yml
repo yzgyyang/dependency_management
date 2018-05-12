@@ -5,6 +5,7 @@ variables:
   CI_BUILD_REF: $CI_COMMIT_SHA
   PYTHON: python3
   CONDA: http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  JULIA: https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.2-linux-x86_64.tar.gz  # Ignore YAMLLintBear
   DEBIAN_FRONTEND: noninteractive
   DEBIAN_PACKAGE_MANAGERS: >
     cabal-install ghc
@@ -16,11 +17,9 @@ variables:
     python3-pip
     r-base
     rubygems
-    julia
     maven
   DEBIAN_OTHER_DEPS: >
     oracle-java8-installer
-    curl
     perl-doc
     php-pear
   FEDORA_OTHER_DEPS: >
@@ -71,7 +70,12 @@ test:ubuntu_rolling:
     PYTHON: python3.6
   before_script:
     - apt-get update -qq
-    - apt-get install -y -qq software-properties-common
+    - apt-get install -y -qq software-properties-common curl
+    - curl $JULIA -o Julia.tar.gz
+    - tar -xf Julia.tar.gz
+    - rm Julia.tar.gz
+    - mv julia* julia
+    - ln -s $PWD/julia/bin/julia /usr/local/bin/julia
     - echo 'oracle-java8-installer shared/accepted-oracle-license-v1-1
             select true' | /usr/bin/debconf-set-selections
     - add-apt-repository -y ppa:webupd8team/java
@@ -83,7 +87,7 @@ test:fedora_25:
   image: fedora:25
   variables:
     PYTHON: python3.5
-    PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS
+    PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS julia
   before_script:
     - echo 'install_weak_deps=False' >> /etc/dnf/dnf.conf
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R-base}
