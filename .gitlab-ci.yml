@@ -35,7 +35,7 @@ variables:
     curl
     git
     java-1_8_0-openjdk
-    lua-devel
+    lua53-devel
     unzip
     tar
     php5-pear
@@ -102,13 +102,13 @@ test:opensuse_leap:
   image: opensuse:leap
   variables:
     PYTHON: python3.4
-    PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS
+    PACKAGE_MANAGERS: $DEBIAN_PACKAGE_MANAGERS julia
     REPOS_BASE: http://download.opensuse.org/repositories
-    RELEASE: openSUSE_Leap_42.2
+    RELEASE: openSUSE_Leap_42.3
     LUAROCKS_REPO: devel:languages:lua
     CARGO_REPO: home:Ledest:devel
   before_script:
-    - zypper removerepo 'NON-OSS' 'Update Non-Oss'
+    - zypper removerepo 'NON OSS' 'NON OSS Update'
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R-base}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/golang/go}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/composer/php-composer}
