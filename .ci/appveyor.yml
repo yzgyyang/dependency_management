@@ -51,7 +51,8 @@ install:
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
-  - "%CMD_IN_ENV% pip install -r requirements.txt -r test-requirements.txt"
+  - "%CMD_IN_ENV% python -m pip install -r requirements.txt \
+    -r test-requirements.txt"
   # Enable Windows Update
   # This is required for one of the dependencies of the Chocolatey PHP package
   - sc config wuauserv start=auto
