@@ -43,6 +43,10 @@ variables:
     lua53-devel
   ARCH_OTHER_DEPS: >
     jdk8-openjdk
+  # Until the following was fixed, add rubygem-rdoc for GemRequirementTest
+  # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=229546
+  FREEBSD_OTHER_DEPS: >
+    rubygem-rdoc
 
 cache:
   paths:
@@ -233,6 +237,66 @@ test:arch:
          tests/YumRequirementTest.py
     - *common_deps_script
   script: *common_script
+
+test:freebsd_release:
+  tags:
+    - freebsd
+  variables:
+    PYTHON: python3.6
+    JEXEC_CMD: jexec gitlab
+  before_script:
+    - .ci/freebsd_jail_start.sh
+    # already included in the base system
+    - COMMON_DEPS=${COMMON_DEPS/make/}
+    - COMMON_DEPS=${COMMON_DEPS/tar/}
+    - PACKAGE_MANAGERS=${DEBIAN_PACKAGE_MANAGERS}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/golang/go}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/luarocks/lua52-luarocks}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/python3-pip/py36-pip}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/composer/php56-composer}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/cabal-install/hs-cabal-install}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/cargo/rust}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/rubygems/ruby24-gems}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/php-pear/php56-pear}
+    # tar is not available on FreeBSD, skipping
+    - COMMON_DEPS=${COMMON_DEPS/tar}
+    # miniconda is not available on FreeBSD, skipping
+    # stack install fails on FreeBSD, skipping
+    - rm dependency_management/requirements/CondaRequirement.py
+         tests/CondaRequirementTest.py
+         dependency_management/requirements/HaskellRequirement.py
+         tests/HaskellRequirementTest.py
+         dependency_management/requirements/CabalRequirement.py
+         tests/CabalRequirementTest.py
+    - rm dependency_management/requirements/AptRequirement.py
+         dependency_management/requirements/BrewRequirement.py
+         dependency_management/requirements/PacmanRequirement.py
+         dependency_management/requirements/PortageRequirement.py
+         dependency_management/requirements/ZypperRequirement.py
+         dependency_management/requirements/DnfRequirement.py
+         dependency_management/requirements/YumRequirement.py
+         tests/AptRequirementTest.py
+         tests/BrewRequirementTest.py
+         tests/PacmanRequirementTest.py
+         tests/PortageRequirementTest.py
+         tests/ZypperRequirementTest.py
+         tests/DnfRequirementTest.py
+         tests/YumRequirementTest.py
+    - ${JEXEC_CMD} env ASSUME_ALWAYS_YES=yes pkg bootstrap
+    - ${JEXEC_CMD} pkg install --yes
+                       $PACKAGE_MANAGERS $FREEBSD_OTHER_DEPS $COMMON_DEPS
+    # executable name is luarocks-5.2
+    - ${JEXEC_CMD} ln -s /usr/local/bin/luarocks-5.2 /usr/local/bin/luarocks
+    # move the repo into jail's home
+    - cp -r $CI_PROJECT_DIR/. /usr/jails/gitlab/
+    # *common_deps_script
+    - ${JEXEC_CMD} env PYTHON=${PYTHON} .ci/freebsd_deps_wrapper.sh
+  script:
+    # *common_script
+    - ${JEXEC_CMD} env GOPATH=/root/go PATH=$PATH:/root/go/bin
+                   $PYTHON -m pytest --cov-fail-under=100
+    - ${JEXEC_CMD} codecov
 
 check_code:
   image: python:3.6
