@@ -124,6 +124,37 @@ class PacmanDistributionRequirementTestCase(unittest.TestCase):
                          .is_installed())
 
 
+@unittest.skipIf(not is_executable_exists('pkg'),
+                 'PKG is not available on this platform')
+class PKGDistributionRequirementTestCase(unittest.TestCase):
+
+    def test__str__(self):
+        self.assertEqual(str(DistributionRequirement(pkg='pkg')),
+                         'pkg')
+
+    def test_installed_requirement(self):
+        self.assertTrue(
+            DistributionRequirement(pkg='pkg').is_installed())
+
+    def test_not_installed_requirement(self):
+        self.assertFalse(
+            DistributionRequirement(pkg='some_bad_package').is_installed())
+
+    def test_installed_requirement_version(self):
+        self.assertTrue(DistributionRequirement(version='0', pkg='pkg')
+                        .is_installed())
+
+    def test_not_installed_requirement_because_version(self):
+        self.assertFalse(DistributionRequirement(version='1000000',
+                                                 pkg='pkg')
+                         .is_installed())
+
+    def test_not_installed_requirement_with_version(self):
+        self.assertFalse(DistributionRequirement(version='1',
+                                                 pkg='some_bad_package')
+                         .is_installed())
+
+
 @unittest.skipIf(not is_executable_exists('emerge'),
                  'Portage is not available on this platform')
 class PortageDistributionRequirementTestCase(unittest.TestCase):

@@ -31,6 +31,7 @@ class DistributionRequirement(PackageRequirement):
         'brew': 'brew',
         'dnf': 'dnf',
         'pacman': 'pacman',
+        'pkg': 'pkg',
         'portage': 'emerge',
         'xbps': 'xbps-install',
         'yum': 'yum',
@@ -56,6 +57,7 @@ class DistributionRequirement(PackageRequirement):
         'brew': 'brew list {}',
         'dnf': 'rpm -qa | grep "^{}"',
         'pacman': 'pacman -Qs {}',
+        'pkg': 'pkg info {}',
         'portage': 'equery list {}',
         'xbps': 'xbps-query {}',
         'yum': 'rpm -qa | grep "^{}"',
@@ -69,6 +71,7 @@ class DistributionRequirement(PackageRequirement):
         'brew': ('brew', 'install'),
         'dnf': ('dnf', 'install', '--assumeyes'),
         'pacman': ('pacman', ),
+        'pkg': ('pkg', 'install', '--yes'),
         'portage': ('emerge', ),
         'xbps': ('xbps-install', '--yes'),
         'yum': ('yum', 'install', '--assumeyes'),
@@ -83,6 +86,7 @@ class DistributionRequirement(PackageRequirement):
         'brew': 'brew list --versions {}',
         'dnf': 'rpm -q --qf "%{{VERSION}}" {}',
         'pacman': 'pacman -Qiq {}',
+        'pkg': 'pkg info {}',
         'portage': "equery -q list --format='$version' {}",
         'xbps': 'xbps-query {}',
         'yum': 'rpm -q --qf "%{{VERSION}}" {}',
@@ -95,6 +99,7 @@ class DistributionRequirement(PackageRequirement):
     VERSION_EXTRACTION_REGEX = {
         'brew': r'\s(?P<version>[^\s]+)$',
         'pacman': r'Version\s+:\s(?P<version>.+)',
+        'pkg': r'Version\s*:\s*(?P<version>[^_]+)',
         'xbps': r'pkgver:\s.+-(?P<version>.*)'
     }
 
@@ -142,8 +147,9 @@ class DistributionRequirement(PackageRequirement):
         >>> pprint(str(not_grep_req))
         ('ExecutableRequirement(apt-get) ExecutableRequirement(brew) '
          'ExecutableRequirement(dnf) ExecutableRequirement(emerge) '
-         'ExecutableRequirement(pacman) ExecutableRequirement(xbps-install) '
-         'ExecutableRequirement(yum) ExecutableRequirement(zypper)')
+         'ExecutableRequirement(pacman) ExecutableRequirement(pkg) '
+         'ExecutableRequirement(xbps-install) ExecutableRequirement(yum) '
+         'ExecutableRequirement(zypper)')
 
         :param package: A string with the name of the package to be installed.
         :param version: A version string.

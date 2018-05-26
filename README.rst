@@ -26,6 +26,7 @@ Supported package managers:
    -  brew (macOS and Linux)
    -  dnf
    -  pacman (Linux and Windows)
+   -  pkg (FreeBSD)
    -  portage
    -  xbps
    -  yum
