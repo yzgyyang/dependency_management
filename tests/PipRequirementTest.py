@@ -35,7 +35,7 @@ class PipRequirementTestCase(unittest.TestCase):
 
     def test_upgrade_requirement(self):
         p = PipRequirement('vanity', '1.2.5')
-        p.install_package()
+        self.assertEqual(p.install_package(), 0)
         old_ver = get_both(
             sys.executable + ' -m pip show vanity')[0].split('\n')[1]
         p.upgrade_package()
@@ -45,7 +45,7 @@ class PipRequirementTestCase(unittest.TestCase):
 
     def test_upgrade_on_already_latest_version(self):
         p = PipRequirement('vanity')
-        p.install_package()
+        self.assertEqual(p.install_package(), 0)
         old_ver = get_both(
             sys.executable + ' -m pip show vanity')[0].split('\n')[1]
         p.upgrade_package()
@@ -55,7 +55,7 @@ class PipRequirementTestCase(unittest.TestCase):
 
     def test_uninstall_requirement(self):
         p = PipRequirement('colorit')
-        p.install_package()
+        self.assertEqual(p.install_package(), 0)
         self.assertTrue(p.is_installed())
         p.uninstall_package()
         self.assertFalse(p.is_installed())

@@ -23,21 +23,21 @@ class PythonImportRequirementTestCase(unittest.TestCase):
     def test_import_success(self):
         c = PythonImportRequirement(
             'simplejson', '', ['simplejson.dumps'])
-        c.install_package()
+        self.assertEqual(c.install_package(), 0)
         self.assertTrue(c.is_importable())
         self.assertTrue(hasattr(c, 'dumps'))
 
         r = PythonImportRequirement('radon',
                                     '1.4.0',
                                     ['radon.complexity.cc_visit'])
-        r.install_package()
+        self.assertEqual(r.install_package(), 0)
         self.assertTrue(r.is_importable())
         self.assertTrue(hasattr(r, 'cc_visit'))
 
         y = PythonImportRequirement('pyyaml',
                                     '',
                                     ['yaml.dump'])
-        y.install_package()
+        self.assertEqual(y.install_package(), 0)
         self.assertTrue(y.is_importable())
         self.assertTrue(hasattr(y, 'dump'))
 
@@ -52,7 +52,7 @@ class PythonImportRequirementTestCase(unittest.TestCase):
         r = PythonImportRequirement('radon',
                                     '1.4.0',
                                     ['radon.complexity', 'radon.visitors'])
-        r.install_package()
+        self.assertEqual(r.install_package(), 0)
         self.assertTrue(r.is_importable())
         self.assertTrue(hasattr(r, 'complexity'))
         self.assertTrue(hasattr(r, 'visitors'))
@@ -61,14 +61,14 @@ class PythonImportRequirementTestCase(unittest.TestCase):
         rad = PythonImportRequirement('radon',
                                       '1.4.0',
                                       ['radon.complexity', 'radon.bad_module'])
-        rad.install_package()
+        self.assertEqual(rad.install_package(), 0)
         self.assertFalse(rad.is_importable())
         self.assertTrue(hasattr(rad, 'complexity'))
         self.assertFalse(hasattr(rad, 'bad_module'))
 
     def test_import_module_success(self):
         s = PythonImportRequirement('colorit', '', ['colorit.bold'])
-        s.install_package()
+        self.assertEqual(s.install_package(), 0)
         s._create_import_attributes()
         self.assertTrue(hasattr(s, 'bold'))
 
@@ -81,7 +81,7 @@ class PythonImportRequirementTestCase(unittest.TestCase):
 
     def test_import_package_success(self):
         a = PythonImportRequirement('autoflake', '', ['autoflake'])
-        a.install_package()
+        self.assertEqual(a.install_package(), 0)
         a._create_import_attributes()
         self.assertTrue(hasattr(a, 'autoflake'))
 

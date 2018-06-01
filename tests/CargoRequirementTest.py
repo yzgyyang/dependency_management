@@ -37,5 +37,5 @@ class CargoPulldownCmarkRequirementTestCase(unittest.TestCase):
 
     def test_install(self):
         r = CargoRequirement('pulldown-cmark', '0.0.14')
-        r.install_package()
+        self.assertEqual(r.install_package(), 0)
         self.assertTrue(r.is_installed())

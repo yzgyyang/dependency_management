@@ -280,7 +280,7 @@ class DistributionDiffstatRequirementTestCase(unittest.TestCase):
 
     def test_install(self):
         r = DistributionRequirement('diffstat')
-        r.install_package()
+        self.assertEqual(r.install_package(), 0)
         self.assertTrue(r.is_installed())
 
 

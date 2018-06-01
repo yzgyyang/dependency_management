@@ -15,7 +15,7 @@ class PearRequirementTestCase(unittest.TestCase):
 
     def test_install(self):
         r = PearRequirement('FSM')
-        r.install_package()
+        self.assertEqual(r.install_package(), 0)
         self.assertTrue(PearRequirement('FSM').is_installed())
 
     def test_not_installed_requirement(self):

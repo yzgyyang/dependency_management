@@ -57,9 +57,12 @@ class PackageRequirement:
     def install_package(self):
         """
         Runs the install command for the package given in a sub-process.
+
+        :param return: Returns exit code of running the install command
         """
-        run(" ".join(self.install_command()), stdout=Capture(),
-            stderr=Capture())
+        p = run(" ".join(self.install_command()), stdout=Capture(),
+                stderr=Capture())
+        return p.returncode
 
     def install_command(self):
         """

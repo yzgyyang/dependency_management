@@ -36,5 +36,5 @@ class LuarocksLuacheckRequirementTestCase(unittest.TestCase):
 
     def test_install(self):
         r = LuarocksRequirement('luacheck', '0.19.1')
-        r.install_package()
+        self.assertEqual(r.install_package(), 0)
         self.assertTrue(r.is_installed())
