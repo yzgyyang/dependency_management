@@ -1,0 +1,11 @@
+overrides: coala.yaml
+
+test_prevent_skips: false
+
+configuration:
+  template_dir:
+    - ../coala-mobans/templates
+  configuration: .moban.yaml
+  configuration_dir: ../coala-mobans
+targets:
+  - test-requirements.txt: test-requirements.txt.jj2

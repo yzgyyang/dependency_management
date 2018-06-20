@@ -60,6 +60,7 @@ cache:
   - go install github.com/gpmgo/gopm
   - mv $GOPATH/bin/gopm /usr/bin
   - cpan App::cpanminus
+  - echo 'pytest-spec' >> test-requirements.txt
   - $PYTHON -m pip install -r requirements.txt -r test-requirements.txt
   - $PYTHON -m pytest --cov-fail-under=100
   - codecov
