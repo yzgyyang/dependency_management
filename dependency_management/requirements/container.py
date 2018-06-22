@@ -99,7 +99,7 @@ class AddressableRequirementSet(OrderedDict, RequirementSet):
 
     def __getattr__(self, attr1):
         # Do not interfere with OrderedDict attr resolution on Python 3.4
-        if attr1.startswith('_OrderedDict'):  # pragma Python 3.5,3.6: no cover
+        if attr1.startswith('_OrderedDict'):  # pragma py3.5,3.6,3.7: no cover
             return self.__getattribute__(attr1)
 
         if not any(name.startswith(attr1 + '.') or
