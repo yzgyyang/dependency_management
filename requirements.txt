@@ -1,2 +1,2 @@
-sarge~=0.1.4
+sarge~=0.1.5
 coala_utils~=0.6
