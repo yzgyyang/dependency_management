@@ -88,7 +88,7 @@ test:ubuntu_rolling:
     - apt-get install -y $PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
   script: *common_script
 
-test:fedora_25:
+test:fedora_25_py35: &fedora
   image: fedora:25
   variables:
     PYTHON: python3.5
@@ -96,12 +96,21 @@ test:fedora_25:
     - PACKAGE_MANAGERS=${DEBIAN_PACKAGE_MANAGERS}
     - echo 'install_weak_deps=False' >> /etc/dnf/dnf.conf
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/R-base}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/python3-pip/${PYTHON/./}}
     # Installing Java 7 for checkstyle 6.19 is problematic
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/maven/}
     - rm dependency_management/requirements/MavenRequirement.py
          tests/MavenRequirementTest.py
     - dnf install -y $PACKAGE_MANAGERS $FEDORA_OTHER_DEPS
+    # python37 package doesnt install pip
+    - $PYTHON -m ensurepip
   script: *common_script
+
+test:fedora_28_py37:
+  <<: *fedora
+  image: fedora:28
+  variables:
+    PYTHON: python3.7
 
 test:opensuse_leap:
   image: opensuse:leap
