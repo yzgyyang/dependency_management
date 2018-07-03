@@ -1,5 +1,9 @@
 from sarge import run, Capture
 
+from dependency_management.requirements.AnyOneOfRequirements import (
+    AnyOneOfRequirements)
+from dependency_management.requirements.DistributionRequirement import (
+    DistributionRequirement)
 from dependency_management.requirements.ExecutableRequirement import (
     ExecutableRequirement)
 from dependency_management.requirements.PackageRequirement import (
@@ -13,7 +17,17 @@ class GoRequirement(PackageRequirement):
     for the requirement.
     """
 
-    REQUIREMENTS = {ExecutableRequirement('go')}
+    REQUIREMENTS = {
+        AnyOneOfRequirements([
+            DistributionRequirement(
+                'go',
+                apt_get='golang',
+                dnf='golang',
+                yum='golang',
+            ),
+            ExecutableRequirement('go'),
+        ])
+    }
 
     def __init__(self, package, version="", flag=""):
         """
