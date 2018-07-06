@@ -8,7 +8,8 @@ variables:
   JULIA: https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.2-linux-x86_64.tar.gz  # Ignore YAMLLintBear
   DEBIAN_FRONTEND: noninteractive
   DEBIAN_PACKAGE_MANAGERS: >
-    cabal-install ghc
+    cabal-install
+    ghc
     cargo
     composer
     golang
@@ -19,17 +20,16 @@ variables:
     r-base
     rubygems
     maven
+    php-pear
   DEBIAN_OTHER_DEPS: >
     oracle-java8-installer
     perl-doc
-    php-pear
   FEDORA_OTHER_DEPS: >
     lua-devel
     rubygem-rdoc
     curl
     bzip2
     perl-core
-    php-pear
   # codecov depends on git, which is not default on openSUSE image
   # curl and unzip are needed by luarocks
   OPENSUSE_OTHER_DEPS: >
@@ -39,7 +39,6 @@ variables:
     lua53-devel
     unzip
     tar
-    php5-pear
 
 cache:
   paths:
@@ -127,6 +126,7 @@ test:opensuse_leap:
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/golang/go}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/composer/php-composer}
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/luarocks/lua53-luarocks}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/php-pear/php5-pear}
     # cargo installed separately below
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/cargo/}
     # Installing Java 7 for checkstyle 6.19 is problematic
