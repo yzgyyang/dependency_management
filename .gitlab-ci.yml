@@ -7,6 +7,14 @@ variables:
   CONDA: http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
   JULIA: https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.2-linux-x86_64.tar.gz  # Ignore YAMLLintBear
   DEBIAN_FRONTEND: noninteractive
+
+  # bzip2 is used by miniconda.sh
+  # git is required by python package codecov and go get
+  # tar is used by haskellstack.sh
+  COMMON_DEPS: >
+    bzip2
+    git
+    tar
   DEBIAN_PACKAGE_MANAGERS: >
     cabal-install
     ghc
@@ -27,18 +35,10 @@ variables:
   FEDORA_OTHER_DEPS: >
     lua-devel
     rubygem-rdoc
-    curl
-    bzip2
     perl-core
-  # codecov depends on git, which is not default on openSUSE image
-  # curl and unzip are needed by luarocks
   OPENSUSE_OTHER_DEPS: >
-    curl
-    git
     java-1_8_0-openjdk
     lua53-devel
-    unzip
-    tar
 
 cache:
   paths:
@@ -49,10 +49,11 @@ cache:
 .common_script: &common_script
   - pip3 install --upgrade pip setuptools
   - npm install -g bower
+  - curl -fsSL -o haskellstack.sh https://get.haskellstack.org/
   - curl -fsSL -o miniconda.sh $CONDA
-  - curl -sSL https://get.haskellstack.org/ | sh
+  - chmod +x haskellstack.sh miniconda.sh
+  - ./haskellstack.sh
   - stack setup
-  - chmod +x miniconda.sh
   - ./miniconda.sh -b -p $HOME/miniconda
   - export PATH=$PATH:$HOME/miniconda/bin
   - export GOPATH=$HOME/go
@@ -84,7 +85,7 @@ test:ubuntu_rolling:
             select true' | /usr/bin/debconf-set-selections
     - add-apt-repository -y ppa:webupd8team/java
     - apt-get update -qq
-    - apt-get install -y $PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS
+    - apt-get install -y $PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS $COMMON_DEPS
   script: *common_script
 
 test:fedora_25_py35: &fedora
@@ -100,7 +101,7 @@ test:fedora_25_py35: &fedora
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/maven/}
     - rm dependency_management/requirements/MavenRequirement.py
          tests/MavenRequirementTest.py
-    - dnf install -y $PACKAGE_MANAGERS $FEDORA_OTHER_DEPS
+    - dnf install -y $PACKAGE_MANAGERS $FEDORA_OTHER_DEPS $COMMON_DEPS
     # python37 package doesnt install pip
     - $PYTHON -m ensurepip
   script: *common_script
@@ -136,7 +137,7 @@ test:opensuse_leap:
     # luarocks
     - zypper addrepo $REPOS_BASE/$LUAROCKS_REPO/$RELEASE/$LUAROCKS_REPO.repo
     - zypper --no-gpg-checks --non-interactive install
-             $PACKAGE_MANAGERS $OPENSUSE_OTHER_DEPS
+             $PACKAGE_MANAGERS $OPENSUSE_OTHER_DEPS $COMMON_DEPS
     # cargo
     - zypper addrepo $REPOS_BASE/$CARGO_REPO/$RELEASE/$CARGO_REPO.repo
     - zypper --no-gpg-checks --non-interactive install cargo rust-std
