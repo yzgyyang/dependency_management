@@ -11,10 +11,12 @@ variables:
 
   # bzip2 is used by miniconda.sh
   # git is required by python package codecov and go get
+  # make is used by cpan
   # tar is used by haskellstack.sh
   COMMON_DEPS: >
     bzip2
     git
+    make
     tar
   DEBIAN_PACKAGE_MANAGERS: >
     cabal-install
@@ -40,6 +42,8 @@ variables:
   OPENSUSE_OTHER_DEPS: >
     java-1_8_0-openjdk
     lua53-devel
+  ARCH_OTHER_DEPS: >
+    jdk8-openjdk
 
 cache:
   paths:
@@ -143,6 +147,44 @@ test:opensuse_leap:
     # go list requires /usr/lib64/go/src/runtime/internal/sys/zversion.go
     - mkdir -p /usr/lib64/go/src/runtime/internal/sys/
     - touch /usr/lib64/go/src/runtime/internal/sys/zversion.go
+  script: *common_script
+
+test:arch:
+  image: greyltc/archlinux-aur:latest
+  variables:
+    # Change Gem installation test package
+    GEM_INSTALLED_PACKAGE: cmath
+    # Required for Perl binaries like cpan and pod2man (used by pacaur)
+    PERL_PATH: /usr/bin/core_perl:/usr/bin/site_perl:/usr/bin/vendor_perl
+    # Required for auto-fetching of pgp keys
+    GNUPGHOME: /home/docker
+    # Pacaur needs this variable
+    EDITOR: vi
+    PEAR_GIT: https://aur.archlinux.org/php-pear.git
+    PEAR_PATH: /home/docker/php-pear
+  before_script:
+    # Required for auto-fetching of pgp keys
+    - echo "keyserver-options auto-key-retrieve" > /home/docker/gpg.conf
+    - PACKAGE_MANAGERS=${DEBIAN_PACKAGE_MANAGERS}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/golang/go}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/python3-pip/python-pip}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/r-base/r}
+    - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/php-pear/}
+    - pacman --noconfirm -Syu
+    - pacman --noconfirm -S ${ARCH_OTHER_DEPS}
+    - pacman --noconfirm -S ${PACKAGE_MANAGERS} ${COMMON_DEPS}
+    - export PATH=$PATH:$PERL_PATH
+    # Uncomment Color option to make sure pacaur does not error out
+    - sed -i 's/#Color/Color/g' /etc/pacman.conf
+    # docker user in used ALWAYS with pacaur as it cannot be ran as root
+    # Update Pacaur
+    - su docker -c "pacaur -Syu --noconfirm --noedit"
+    # Working around the PKGBUILD edits for php-pear
+    - su docker -c "git clone $PEAR_GIT $PEAR_PATH"
+    - sed -i 's/}\/usr\/share\/pear/}/g' $PEAR_PATH/PKGBUILD
+    # install using makepkg
+    - su docker -c "cd $PEAR_PATH && makepkg -si --noconfirm"
+    - cabal update
   script: *common_script
 
 check_code:
