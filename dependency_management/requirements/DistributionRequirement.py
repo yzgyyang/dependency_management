@@ -70,7 +70,7 @@ class DistributionRequirement(PackageRequirement):
         'apt_get': ('apt-get', 'install', '--yes'),
         'brew': ('brew', 'install'),
         'dnf': ('dnf', 'install', '--assumeyes'),
-        'pacman': ('pacman', ),
+        'pacman': ('pacman', '-S', '--noconfirm'),
         'pkg': ('pkg', 'install', '--yes'),
         'portage': ('emerge', ),
         'xbps': ('xbps-install', '--yes'),
