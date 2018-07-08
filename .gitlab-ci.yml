@@ -42,9 +42,7 @@ variables:
 
 cache:
   paths:
-    - ~/.local/share/coala-bears/
     - ~/.cache/pip
-    - vendor/
 
 .common_script: &common_script
   - pip3 install --upgrade pip setuptools
