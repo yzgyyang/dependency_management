@@ -147,10 +147,8 @@ test:opensuse_leap:
   script: *common_script
 
 check_code:
-  image: ubuntu:rolling
+  image: python:3.6
   before_script:
-    - apt-get update -qq
-    - apt-get install -y -qq python3-pip git
     - pip3 install .
     - pip3 install coala-bears
   script:
