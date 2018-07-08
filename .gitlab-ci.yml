@@ -4,7 +4,6 @@ variables:
   CI_BUILD_REPO: $CI_REPOSITORY_URL
   CI_BUILD_REF: $CI_COMMIT_SHA
   PYTHON: python3
-  CONDA: http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
   JULIA: https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.2-linux-x86_64.tar.gz  # Ignore YAMLLintBear
   DEBIAN_FRONTEND: noninteractive
   XDG_CACHE_HOME: "$CI_PROJECT_DIR/.cache/"
@@ -49,23 +48,13 @@ cache:
   paths:
     - .cache/pip
 
+.common_deps_script: &common_deps_script |
+  export GOPATH=$HOME/go
+  export PATH=$PATH:$GOPATH/bin
+  export PATH=$PATH:$HOME/miniconda/bin
+  PYTHON=${PYTHON} .ci/deps.sh
+
 .common_script: &common_script
-  - $PYTHON -m pip install --upgrade pip setuptools
-  - npm install -g bower
-  - curl -fsSL -o haskellstack.sh https://get.haskellstack.org/
-  - curl -fsSL -o miniconda.sh $CONDA
-  - chmod +x haskellstack.sh miniconda.sh
-  - ./haskellstack.sh
-  - stack setup --resolver ghc-8.4.2
-  - ./miniconda.sh -b -p $HOME/miniconda
-  - export PATH=$PATH:$HOME/miniconda/bin
-  - export GOPATH=$HOME/go
-  - go get -u github.com/gpmgo/gopm
-  - go install github.com/gpmgo/gopm
-  - export PATH=$PATH:$GOPATH/bin
-  - cpan App::cpanminus
-  - echo 'pytest-spec' >> test-requirements.txt
-  - $PYTHON -m pip install -r requirements.txt -r test-requirements.txt
   - $PYTHON -m pytest --cov-fail-under=100
   - codecov
 
@@ -89,6 +78,7 @@ test:ubuntu_rolling:
     - add-apt-repository -y ppa:webupd8team/java
     - apt-get update -qq
     - apt-get install -y $PACKAGE_MANAGERS $DEBIAN_OTHER_DEPS $COMMON_DEPS
+    - *common_deps_script
   script: *common_script
 
 test:fedora_25_py35: &fedora
@@ -107,6 +97,7 @@ test:fedora_25_py35: &fedora
     - dnf install -y $PACKAGE_MANAGERS $FEDORA_OTHER_DEPS $COMMON_DEPS
     # python37 package doesnt install pip
     - $PYTHON -m ensurepip
+    - *common_deps_script
   script: *common_script
 
 test:fedora_28_py37:
@@ -147,6 +138,7 @@ test:opensuse_leap:
     # go list requires /usr/lib64/go/src/runtime/internal/sys/zversion.go
     - mkdir -p /usr/lib64/go/src/runtime/internal/sys/
     - touch /usr/lib64/go/src/runtime/internal/sys/zversion.go
+    - *common_deps_script
   script: *common_script
 
 test:arch:
@@ -185,6 +177,7 @@ test:arch:
     # install using makepkg
     - su docker -c "cd $PEAR_PATH && makepkg -si --noconfirm"
     - cabal update
+    - *common_deps_script
   script: *common_script
 
 check_code:
