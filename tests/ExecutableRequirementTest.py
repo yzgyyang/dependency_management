@@ -1,4 +1,5 @@
 import os
+import sys
 from platform import system
 from tempfile import TemporaryDirectory
 import unittest
@@ -11,7 +12,8 @@ class ExecutableRequirementTestCase(unittest.TestCase):
 
     def test_installed_requirement(self):
         self.assertTrue(ExecutableRequirement("python").is_installed() or
-                        ExecutableRequirement("python3").is_installed())
+                        ExecutableRequirement("python3").is_installed() or
+                        ExecutableRequirement(sys.executable).is_installed())
 
     def test_not_installed_requirement(self):
         self.assertFalse(ExecutableRequirement("some_bad_exec").is_installed())

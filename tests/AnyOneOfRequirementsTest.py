@@ -1,3 +1,4 @@
+import sys
 import unittest
 
 from dependency_management.requirements.AnyOneOfRequirements import (
@@ -20,7 +21,8 @@ class AnyOneOfRequirementsTestCase(unittest.TestCase):
         self.assertTrue(
             AnyOneOfRequirements([ExecutableRequirement("python"),
                                   ExecutableRequirement("python2"),
-                                  ExecutableRequirement("python3")])
+                                  ExecutableRequirement("python3"),
+                                  ExecutableRequirement(sys.executable)])
             .is_installed())
 
     def test_installed_mixed_with_not_installed_requirements(self):
@@ -28,6 +30,7 @@ class AnyOneOfRequirementsTestCase(unittest.TestCase):
             AnyOneOfRequirements([ExecutableRequirement("python"),
                                   ExecutableRequirement("python2"),
                                   ExecutableRequirement("python3"),
+                                  ExecutableRequirement(sys.executable),
                                   ExecutableRequirement("some_bad_exec")])
             .is_installed())
 
