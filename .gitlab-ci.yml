@@ -52,7 +52,7 @@ cache:
   - curl -fsSL -o miniconda.sh $CONDA
   - chmod +x haskellstack.sh miniconda.sh
   - ./haskellstack.sh
-  - stack setup
+  - stack setup --resolver ghc-8.4.2
   - ./miniconda.sh -b -p $HOME/miniconda
   - export PATH=$PATH:$HOME/miniconda/bin
   - export GOPATH=$HOME/go
