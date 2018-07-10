@@ -46,7 +46,7 @@ cache:
     - .cache/pip
 
 .common_script: &common_script
-  - pip3 install --upgrade pip setuptools
+  - $PYTHON -m pip install --upgrade pip setuptools
   - npm install -g bower
   - curl -fsSL -o haskellstack.sh https://get.haskellstack.org/
   - curl -fsSL -o miniconda.sh $CONDA
