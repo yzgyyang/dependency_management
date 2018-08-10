@@ -1,5 +1,6 @@
 from collections import Counter
 from distutils.version import LooseVersion
+import logging
 import re
 
 from sarge import run, Capture
@@ -19,6 +20,7 @@ class NoArgsNotImplementedError(NotImplementedError, TypeError):
 
 class DistributionRequirement(PackageRequirement):
     """
+    **This class is deprecated!** Use the `PlatformRequirement` class instead.
     This class is a subclass of ``PackageRequirement``. It specifies the
     proper type automatically.
     """
@@ -157,6 +159,10 @@ class DistributionRequirement(PackageRequirement):
                         installed.  Unused.
         :param kwargs: Override package names for supported package managers.
         """
+        logging.debug('DistributionRequirement has been deprecated! '
+                      'Use one of the subclasses from PlatformRequirement '
+                      'for distribution specific dependencies.')
+
         self._managers = None
         self._manager = None
         self.packages = package_overrides

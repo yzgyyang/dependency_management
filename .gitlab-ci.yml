@@ -71,6 +71,18 @@ test:ubuntu_rolling:
     - curl $JULIA -o Julia.tar.gz
     - tar -xf Julia.tar.gz
     - rm Julia.tar.gz
+    - rm dependency_management/requirements/BrewRequirement.py
+         dependency_management/requirements/PacmanRequirement.py
+         dependency_management/requirements/PortageRequirement.py
+         dependency_management/requirements/ZypperRequirement.py
+         dependency_management/requirements/DnfRequirement.py
+         dependency_management/requirements/YumRequirement.py
+         tests/BrewRequirementTest.py
+         tests/PacmanRequirementTest.py
+         tests/PortageRequirementTest.py
+         tests/ZypperRequirementTest.py
+         tests/DnfRequirementTest.py
+         tests/YumRequirementTest.py
     - mv julia* julia
     - ln -s $PWD/julia/bin/julia /usr/local/bin/julia
     - echo 'oracle-java8-installer shared/accepted-oracle-license-v1-1
@@ -94,6 +106,16 @@ test:fedora_25_py35: &fedora
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/maven/}
     - rm dependency_management/requirements/MavenRequirement.py
          tests/MavenRequirementTest.py
+    - rm dependency_management/requirements/AptRequirement.py
+         dependency_management/requirements/BrewRequirement.py
+         dependency_management/requirements/PacmanRequirement.py
+         dependency_management/requirements/PortageRequirement.py
+         dependency_management/requirements/ZypperRequirement.py
+         tests/AptRequirementTest.py
+         tests/BrewRequirementTest.py
+         tests/PacmanRequirementTest.py
+         tests/PortageRequirementTest.py
+         tests/ZypperRequirementTest.py
     - dnf install -y $PACKAGE_MANAGERS $FEDORA_OTHER_DEPS $COMMON_DEPS
     # python37 package doesnt install pip
     - $PYTHON -m ensurepip
@@ -128,6 +150,18 @@ test:opensuse_leap:
     - PACKAGE_MANAGERS=${PACKAGE_MANAGERS/maven/}
     - rm dependency_management/requirements/MavenRequirement.py
          tests/MavenRequirementTest.py
+    - rm dependency_management/requirements/AptRequirement.py
+         dependency_management/requirements/BrewRequirement.py
+         dependency_management/requirements/PacmanRequirement.py
+         dependency_management/requirements/PortageRequirement.py
+         dependency_management/requirements/DnfRequirement.py
+         dependency_management/requirements/YumRequirement.py
+         tests/AptRequirementTest.py
+         tests/BrewRequirementTest.py
+         tests/PacmanRequirementTest.py
+         tests/PortageRequirementTest.py
+         tests/DnfRequirementTest.py
+         tests/YumRequirementTest.py
     # luarocks
     - zypper addrepo $REPOS_BASE/$LUAROCKS_REPO/$RELEASE/$LUAROCKS_REPO.repo
     - zypper --no-gpg-checks --non-interactive install
@@ -177,6 +211,18 @@ test:arch:
     # install using makepkg
     - su docker -c "cd $PEAR_PATH && makepkg -si --noconfirm"
     - cabal update
+    - rm dependency_management/requirements/AptRequirement.py
+         dependency_management/requirements/BrewRequirement.py
+         dependency_management/requirements/PortageRequirement.py
+         dependency_management/requirements/ZypperRequirement.py
+         dependency_management/requirements/DnfRequirement.py
+         dependency_management/requirements/YumRequirement.py
+         tests/AptRequirementTest.py
+         tests/BrewRequirementTest.py
+         tests/PortageRequirementTest.py
+         tests/ZypperRequirementTest.py
+         tests/DnfRequirementTest.py
+         tests/YumRequirementTest.py
     - *common_deps_script
   script: *common_script
 
