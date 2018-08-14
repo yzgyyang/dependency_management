@@ -32,7 +32,7 @@ class PkgRequirementTestCase(unittest.TestCase):
             PkgRequirement('some_bad_package').is_installed())
 
     def test_installed_requirement_version(self):
-        self.assertTrue(PkgRequirement('python3', '0')
+        self.assertTrue(PkgRequirement('pkg', '1.10.5')
                         .is_installed())
 
     def test_not_installed_requirement_with_version(self):
