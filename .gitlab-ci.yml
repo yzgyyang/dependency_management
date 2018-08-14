@@ -73,12 +73,14 @@ test:ubuntu_rolling:
     - rm Julia.tar.gz
     - rm dependency_management/requirements/BrewRequirement.py
          dependency_management/requirements/PacmanRequirement.py
+         dependency_management/requirements/PkgRequirement.py
          dependency_management/requirements/PortageRequirement.py
          dependency_management/requirements/ZypperRequirement.py
          dependency_management/requirements/DnfRequirement.py
          dependency_management/requirements/YumRequirement.py
          tests/BrewRequirementTest.py
          tests/PacmanRequirementTest.py
+         tests/PkgRequirementTest.py
          tests/PortageRequirementTest.py
          tests/ZypperRequirementTest.py
          tests/DnfRequirementTest.py
@@ -109,11 +111,13 @@ test:fedora_25_py35: &fedora
     - rm dependency_management/requirements/AptRequirement.py
          dependency_management/requirements/BrewRequirement.py
          dependency_management/requirements/PacmanRequirement.py
+         dependency_management/requirements/PkgRequirement.py
          dependency_management/requirements/PortageRequirement.py
          dependency_management/requirements/ZypperRequirement.py
          tests/AptRequirementTest.py
          tests/BrewRequirementTest.py
          tests/PacmanRequirementTest.py
+         tests/PkgRequirementTest.py
          tests/PortageRequirementTest.py
          tests/ZypperRequirementTest.py
     - dnf install -y $PACKAGE_MANAGERS $FEDORA_OTHER_DEPS $COMMON_DEPS
@@ -153,12 +157,14 @@ test:opensuse_leap:
     - rm dependency_management/requirements/AptRequirement.py
          dependency_management/requirements/BrewRequirement.py
          dependency_management/requirements/PacmanRequirement.py
+         dependency_management/requirements/PkgRequirement.py
          dependency_management/requirements/PortageRequirement.py
          dependency_management/requirements/DnfRequirement.py
          dependency_management/requirements/YumRequirement.py
          tests/AptRequirementTest.py
          tests/BrewRequirementTest.py
          tests/PacmanRequirementTest.py
+         tests/PkgRequirementTest.py
          tests/PortageRequirementTest.py
          tests/DnfRequirementTest.py
          tests/YumRequirementTest.py
@@ -213,12 +219,14 @@ test:arch:
     - cabal update
     - rm dependency_management/requirements/AptRequirement.py
          dependency_management/requirements/BrewRequirement.py
+         dependency_management/requirements/PkgRequirement.py
          dependency_management/requirements/PortageRequirement.py
          dependency_management/requirements/ZypperRequirement.py
          dependency_management/requirements/DnfRequirement.py
          dependency_management/requirements/YumRequirement.py
          tests/AptRequirementTest.py
          tests/BrewRequirementTest.py
+         tests/PkgRequirementTest.py
          tests/PortageRequirementTest.py
          tests/ZypperRequirementTest.py
          tests/DnfRequirementTest.py
