@@ -68,7 +68,7 @@ class HaskellRequirement(PackageRequirement):
         'stack': r'-(?P<version>[^\s]+)(?:\s|$)'
     }
 
-    def __init__(self, package: str=None, version=''):
+    def __init__(self, package: str = None, version=''):
         """
         Constructs a new ``HaskellRequirement``, using the
         ``PackageRequirement`` constructor.

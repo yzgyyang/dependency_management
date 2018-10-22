@@ -11,7 +11,7 @@ from dependency_management.requirements.HaskellRequirement import (
 @unittest.skipIf(shutil.which('cabal') is None, 'Cabal is not installed.')
 class HaskellCabalRequirementTestCase(unittest.TestCase):
 
-    def _mock_test(self, package: str=None, version=''):
+    def _mock_test(self, package: str = None, version=''):
         _shutil_which = shutil.which
         hr = HaskellRequirement(package, version)
         old_managers = hr._available_managers

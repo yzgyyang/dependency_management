@@ -10,7 +10,7 @@ class PythonImportRequirement(PipRequirement):
     def __init__(self,
                  package,
                  version="",
-                 imports: list=None):
+                 imports: list = None):
         """
         Constructs a new ``PythonImportRequirement`` using the
         ``PipRequirement``

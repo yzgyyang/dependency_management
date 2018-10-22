@@ -105,7 +105,7 @@ class DistributionRequirement(PackageRequirement):
         'xbps': r'pkgver:\s.+-(?P<version>.*)'
     }
 
-    def __init__(self, package: str=None, version='', repo='',
+    def __init__(self, package: str = None, version='', repo='',
                  **package_overrides):
         """
         Constructs a new ``DistributionRequirement``, using the
